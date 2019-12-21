@@ -7,7 +7,7 @@
 #' @param x \code{\link{HTSet-class}}.
 #' @param name The name of the slot.
 #' @export
-#' @seealso \code{\code{HTSet-class}}
+#' @seealso \code{\link{HTSet-class}}
 setMethod("$", "HTSet", function(x, name){
     slot(x, name)
 })
@@ -36,6 +36,8 @@ setReplaceMethod(
     }
 )
 
+#' @rdname Extract
+#' @aliases [[
 #' @export
 setMethod("[[", "HTSet", function(x, i, j, ...){
     stopifnot(is.character(i))
@@ -61,13 +63,15 @@ setReplaceMethod(
 #' @param i,j indices for features (i) and samples (j) to extract.
 #' @param k column index for fdata
 #' @param l column index for pdata
+#' @param drop If TRUE the result is coerced to the lowest possible dimension
+#' @param ... other arguments
 #' @export
 setMethod(
     "[", "HTSet",
     function(x, i, j, k, l, ..., drop = FALSE) {
-        x@edata = x@edata[i,j]
-        x@pdata = x@pdata[j,l]
-        x@fdata = x@fdata[i,k]
+        x@edata = x@edata[i,j,drop = drop]
+        x@pdata = x@pdata[j,l,drop = drop]
+        x@fdata = x@fdata[i,k,drop = drop]
         validObject(x)
         return(x)
     }

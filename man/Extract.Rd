@@ -6,6 +6,8 @@
 \alias{$<-}
 \alias{$<-,HTSet-method}
 \alias{[[<-}
+\alias{[[,HTSet-method}
+\alias{[[}
 \alias{[[<-,HTSet-method}
 \alias{[,HTSet-method}
 \alias{[}
@@ -16,6 +18,8 @@
 \S4method{$}{HTSet}(x, name)
 
 \S4method{$}{HTSet}(x, name) <- value
+
+\S4method{[[}{HTSet}(x, i, j, ...)
 
 \S4method{[[}{HTSet}(x, i, j, ...) <- value
 
@@ -30,6 +34,14 @@
 definition.}
 
 \item{i, j}{indices for features (i) and samples (j) to extract.}
+
+\item{...}{other arguments}
+
+\item{k}{column index for fdata}
+
+\item{l}{column index for pdata}
+
+\item{drop}{If TRUE the result is coerced to the lowest possible dimension}
 }
 \description{
 Operators "$" and [[ extract or replace a slot, while [ extracts
@@ -37,5 +49,5 @@ a subset of the \code{\link{HTSet-class}} object in a similar manner of
 \code{\link{subset_features}} and \code{\link{subset_samples}}.
 }
 \seealso{
-\code{\code{HTSet-class}}
+\code{\link{HTSet-class}}
 }

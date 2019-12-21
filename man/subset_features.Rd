@@ -7,9 +7,9 @@
 subset_features(object, features)
 }
 \arguments{
-\item{features}{The features to subset. Can be character, logical, or integers.}
+\item{object}{\code{\link{HTSet-class}}}
 
-\item{x}{\code{\link{HTSet-class}}}
+\item{features}{The features to subset. Can be character, logical, or integers.}
 }
 \value{
 \code{\link{HTSet-class}}

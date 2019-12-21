@@ -7,9 +7,9 @@
 subset_samples(object, samples)
 }
 \arguments{
-\item{samples}{The samples to subset. Can be character, logical, or integers.}
+\item{object}{\code{\link{HTSet-class}}}
 
-\item{x}{\code{\link{HTSet-class}}}
+\item{samples}{The samples to subset. Can be character, logical, or integers.}
 }
 \value{
 \code{\link{HTSet-class}}

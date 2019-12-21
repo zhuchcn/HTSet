@@ -2,6 +2,7 @@
 % Please edit documentation in R/HTSet-methods.R
 \name{featureNames,HTSet-method}
 \alias{featureNames,HTSet-method}
+\alias{featureNames}
 \alias{featureNames<-,HTSet-method}
 \alias{featureNames<-}
 \title{Get or set the feature names of an HTSet object}
@@ -19,5 +20,6 @@
 A character vector.
 }
 \description{
-Get or set the feature names of an \code{\link{HTSet}} object.
+Get or set the feature names of an \code{\link{HTSet-class}}
+object.
 }

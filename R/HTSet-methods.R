@@ -5,10 +5,13 @@ setGeneric("sampleNames<-", function(x, value) standardGeneric("sampleNames<-"))
 setGeneric("featureNames", function(x) standardGeneric("featureNames"))
 setGeneric("featureNames<-", function(x, value) standardGeneric("featureNames<-"))
 
+#' @rdname dimensions
+#' @aliases dim
 #' @title Get dimemsions
-#' @description Get the dimensions of the edata of an HTSet object
+#' @description Get number of samples, features, or both dimensions of an HTSet
+#' object
 #' @seealso \code{\link{HTSet-class}}
-#' @param x A \code{\link{HTSet-class}} or derived class object.
+#' @param x \code{\link{HTSet-class}}
 #' @return A integer vector with length of 2. The first is the number of
 #' features, and the second is number of samples.
 #' @export
@@ -19,13 +22,9 @@ setMethod(
     }
 )
 
-#' @title Get number of samples
-#' @description Get the number of samples of a \code{\link{HTSet}} object
-#'
-#' @param x \code{\link{HTSet-class}}
-#'
-#' @return integer
-#' @seealso \code{\link{HTSet-class}}
+#' @rdname dimensions
+#' @aliases nsamples
+#' @return integer, number of samples
 #' @export
 setMethod(
     "nsamples", signature = "HTSet",
@@ -34,13 +33,9 @@ setMethod(
     }
 )
 
-#' @title Get number of features
-#' @description Get the number of features of a \code{\link{HTSet}} object
-#'
-#' @param x \code{\link{HTSet-class}}
-#'
-#' @return integer
-#' @seealso \code{\link{HTSet-class}}
+#' @rdname dimensions
+#' @aliases nfeatures
+#' @return integer, number of features
 #' @export
 setMethod(
     "nfeatures", signature = "HTSet",
@@ -50,6 +45,7 @@ setMethod(
 )
 
 #' @rdname sampleNames-HTSet-method
+#' @aliases sampleNames
 #' @title Get or set the sample names of an HTSet object
 #' @description Get or set the sample names of an \code{\link{HTSet}} object.
 #'
@@ -80,8 +76,10 @@ setReplaceMethod(
 )
 
 #' @rdname featureNames-HTSet-method
+#' @aliases featureNames
 #' @title Get or set the feature names of an HTSet object
-#' @description Get or set the feature names of an \code{\link{HTSet}} object.
+#' @description Get or set the feature names of an \code{\link{HTSet-class}}
+#' object.
 #'
 #' @param x \code{\link{HTSet-class}}
 #'
@@ -111,7 +109,7 @@ setReplaceMethod(
 
 #' @title Subset samples
 #' @description Get a subset of samples of an HTSet object.
-#' @param x \code{\link{HTSet-class}}
+#' @param object \code{\link{HTSet-class}}
 #' @param samples The samples to subset. Can be character, logical, or integers.
 #' @return \code{\link{HTSet-class}}
 #' @export
@@ -138,7 +136,7 @@ subset_samples = function(object, samples){
 
 #' @title Subset features
 #' @description Get a subset of features of an HTSet object.
-#' @param x \code{\link{HTSet-class}}
+#' @param object \code{\link{HTSet-class}}
 #' @param features The features to subset. Can be character, logical, or integers.
 #' @return \code{\link{HTSet-class}}
 #' @export

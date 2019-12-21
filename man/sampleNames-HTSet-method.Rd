@@ -2,6 +2,7 @@
 % Please edit documentation in R/HTSet-methods.R
 \name{sampleNames,HTSet-method}
 \alias{sampleNames,HTSet-method}
+\alias{sampleNames}
 \alias{sampleNames<-,HTSet-method}
 \alias{sampleNames<-}
 \title{Get or set the sample names of an HTSet object}

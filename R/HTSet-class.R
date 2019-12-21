@@ -54,6 +54,15 @@ setClass(
     }
 )
 
+#' @title HTSet S4 class constructur
+#' @description The constructore for the \code{\link{HTSet-class}}.
+#' @param edata matrix
+#' @param fdata data.frame, default is NULL
+#' @param pdata data.frame, default is NULL
+#' @param assay list,t default is NULL
+#' @return \code{\link{HTSet-class}}
+#' @seealso \code{\link{HTSet-class}}
+#' @author Chenghao Zhu
 #' @export
 HTSet = function(edata, fdata = NULL, pdata = NULL, assay = NULL){
     new("HTSet", edata = edata, fdata = fdata, pdata = pdata, assay = assay)
@@ -62,7 +71,7 @@ HTSet = function(edata, fdata = NULL, pdata = NULL, assay = NULL){
 #' @keywords internal
 `%+%` = function(x, y) paste0(x,y)
 
-#' @export
+#' @import crayon
 setMethod(
     "show", signature = "HTSet",
     definition = function(object){
@@ -75,11 +84,6 @@ setMethod(
             nfeaturevars = 0
         } else {
             nfeaturevars = ncol(object@fdata)
-        }
-        if(requireNamespace("crayon")){
-            blue = crayon::blue
-        } else {
-            blue = cat
         }
         cat(
             blue("S4 class: HTSet") %+% "\n" %+%

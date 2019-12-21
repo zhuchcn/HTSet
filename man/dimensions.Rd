@@ -2,19 +2,33 @@
 % Please edit documentation in R/HTSet-methods.R
 \name{dim,HTSet-method}
 \alias{dim,HTSet-method}
+\alias{dim}
+\alias{nsamples,HTSet-method}
+\alias{nsamples}
+\alias{nfeatures,HTSet-method}
+\alias{nfeatures}
 \title{Get dimemsions}
 \usage{
 \S4method{dim}{HTSet}(x)
+
+\S4method{nsamples}{HTSet}(x)
+
+\S4method{nfeatures}{HTSet}(x)
 }
 \arguments{
-\item{x}{A \code{\link{HTSet-class}} or derived class object.}
+\item{x}{\code{\link{HTSet-class}}}
 }
 \value{
 A integer vector with length of 2. The first is the number of
 features, and the second is number of samples.
+
+integer, number of samples
+
+integer, number of features
 }
 \description{
-Get the dimensions of the edata of an HTSet object
+Get number of samples, features, or both dimensions of an HTSet
+object
 }
 \seealso{
 \code{\link{HTSet-class}}
