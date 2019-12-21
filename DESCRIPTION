@@ -13,7 +13,8 @@ Collate:
     HTSet-class.R
     HTSet-methods.R
     HTSet-accessors.R
-Import:
+Imports:
+    magrittr,
     dplyr,
     reshape2,
     ggplot2
