@@ -242,3 +242,20 @@ transform_by_feature = function(object, FUN, ...){
     validObject(object)
     return(object)
 }
+
+# setAs(
+#     "HTSet", "ExpressionSet",
+#     function(from){
+#         stopifnot(requireNamespace("Biobase"))
+#
+#         edata = from@edata
+#         pdata = from@pdata
+#         fdata = from@fdata
+#
+#         Biobase::ExpressionSet(
+#             assayData = edata,
+#             phenoData = Biobase::AnnotatedDataFrame(pdata),
+#             featureData = Biobase::AnnotatedDataFrame(fdata)
+#         )
+#     }
+# )

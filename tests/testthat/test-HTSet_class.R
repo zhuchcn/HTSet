@@ -14,10 +14,51 @@ load_rawdata_lipidome = function(){
 }
 lipidome = load_rawdata_lipidome()
 
-test_that("HTSet class is initiated successfully", {
+test_that("HTSet class new", {
     edata = lipidome$edata
     fdata = lipidome$fdata
     pdata = lipidome$pdata
+
+    lpd = new("HTSet", edata = edata, fdata = fdata, pdata = pdata)
+    expect_s4_class(lpd, "HTSet")
+    expect_true(is.matrix(lpd@edata))
+    expect_s3_class(lpd@pdata, "data.frame")
+    expect_s3_class(lpd@fdata, "data.frame")
+    expect_null(lpd@assay)
+    expect_equal(nrow(lpd@edata), nrow(lpd@fdata))
+    expect_equal(ncol(lpd@edata), nrow(lpd@pdata))
+
+    # when pdata is not given
+    lpd = new("HTSet", edata = edata, fdata = fdata, pdata = NULL)
+    expect_s4_class(lpd, "HTSet")
+    expect_true(is.null(lpd@pdata))
+
+    # when fdata is not given
+    lpd = new("HTSet", edata = edata, fdata = NULL, pdata = pdata)
+    expect_s4_class(lpd, "HTSet")
+    expect_true(is.null(lpd@fdata))
+
+    pdata2 = pdata[1:20,]
+    expect_error(new("HTSet", edata = edata, fdata = fdata, pdata = pdata2))
+    pdata2 = pdata
+    rownames(pdata2) = NULL
+    expect_error(new("HTSet", edata = edata, fdata = fdata, pdata = pdata2))
+
+    fdata2 = fdata[1:20,]
+    expect_error(new("HTSet", edata = edata, fdata = fdata, pdata = pdata2))
+    fdata2 = fdata
+    rownames(fdata2) = NULL
+    expect_error(new("HTSet", edata = edata, fdata = fdata, pdata = pdata2))
+
+    edata2 = as.character(edata)
+    expect_error(new("HTSet", edata = edata, fdata = fdata, pdata = pdata2))
+})
+
+test_that("HTSet constructor", {
+    edata = lipidome$edata
+    fdata = lipidome$fdata
+    pdata = lipidome$pdata
+
     lpd = HTSet(edata = edata, fdata = fdata, pdata = pdata)
     expect_s4_class(lpd, "HTSet")
     expect_true(is.matrix(lpd@edata))
@@ -36,12 +77,7 @@ test_that("HTSet class is initiated successfully", {
     lpd = HTSet(edata = edata, pdata = pdata)
     expect_s4_class(lpd, "HTSet")
     expect_true(is.null(lpd@fdata))
-})
 
-test_that("HTSet will fail", {
-    edata = lipidome$edata
-    fdata = lipidome$fdata
-    pdata = lipidome$pdata
     pdata2 = pdata[1:20,]
     expect_error(HTSet(edata, fdata, pdata2))
     pdata2 = pdata

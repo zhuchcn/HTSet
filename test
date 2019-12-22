@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd ..
+R CMD build HTSet
+R CMD check HTSet_0.1.0.tar.gz
+rm HTSet_0.1.0.tar.gz
