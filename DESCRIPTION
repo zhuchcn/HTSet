@@ -7,6 +7,7 @@ Maintainer: Chenghao Zhu <chhzhu@ucdavis.edu>
 Description: This package defines a S4 data container for quantitative high 
     though-put experiment data, such as RNA-seq, proteomics, and metabolomics, for
     data analysis, statistic test, and visualization.
+Depends: R (>= 3.1.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -14,6 +15,7 @@ Collate:
     HTSet-class.R
     HTSet-methods.R
     HTSet-accessors.R
+    data.R
 Imports:
     magrittr,
     dplyr,
