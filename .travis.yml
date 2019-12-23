@@ -5,10 +5,16 @@ r_packages:
     - covr
 
 after_success:
-    -Rscript -e "cov::codecov()"
+    - Rscript -e "cov::codecov()"
+    - Rscript -e 'pkgdown::deploy_site_github()'
 
 before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
+
 deploy:
-    provider: script
-    script: Rscript -e 'pkgdown::deploy_site_github()'
+    provider: pages
     skip_cleanup: true
+    github-token: $GITHUB_PAT
+    keep-history: true
+    local-dir: docs
+    on:
+        branch: master
