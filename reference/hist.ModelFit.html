@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract or replace parts of an HTSet object — $,HTSet-method • HTSet</title>
+<title>p value histogram — hist.ModelFit • HTSet</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,9 @@
 
 
 
-<meta property="og:title" content="Extract or replace parts of an HTSet object — $,HTSet-method" />
-<meta property="og:description" content="Operators &quot;$&quot; and [[ extract or replace a slot, while [ extracts
-a subset of the HTSet-class object in a similar manner of
-subset_features and subset_samples." />
+<meta property="og:title" content="p value histogram — hist.ModelFit" />
+<meta property="og:description" content="create a histogram for p values of model fit result returned by
+model_fit" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -94,7 +93,7 @@ subset_features and subset_samples." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/statistics.html">statistics</a>
+      <a href="../articles/statistics.html">Differential analysis with HTSet</a>
     </li>
   </ul>
 </li>
@@ -114,85 +113,84 @@ subset_features and subset_samples." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract or replace parts of an HTSet object</h1>
+    <h1>p value histogram</h1>
     
-    <div class="hidden name"><code>Extract.Rd</code></div>
+    <div class="hidden name"><code>hist.ModelFit.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Operators "$" and [[ extract or replace a slot, while [ extracts
-a subset of the <code>HTSet-class</code> object in a similar manner of
-<code>subset_features</code> and <code>subset_samples</code>.</p>
+    <p>create a histogram for p values of model fit result returned by
+<code>model_fit</code></p>
     </div>
 
-    <pre class="usage"># S4 method for HTSet
-$(x, name)
-
-# S4 method for HTSet
-$(x, name)
-
-# S4 method for HTSet
-$(x, name) <- value
-
-# S4 method for HTSet
-[[(x, i, j, ...)
-
-# S4 method for HTSet
-[[(x, i, j, ...) <- value
-
-# S4 method for HTSet
-[(x, i, j, k, l, ..., drop = FALSE)</pre>
+    <pre class="usage"><span class='co'># S3 method for ModelFit</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span>(
+  <span class='no'>x</span>,
+  <span class='no'>vline</span>,
+  <span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>40</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray10"</span>,
+  <span class='kw'>vline_linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>,
+  <span class='kw'>vline_size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>vline_color</span> <span class='kw'>=</span> <span class='st'>"gray30"</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>HTSet-class</code>.</p></td>
+      <td><p>ModelFit. Must be returned by <code>model_fit</code></p></td>
     </tr>
     <tr>
-      <th>name</th>
-      <td><p>The name of the slot.</p></td>
+      <th>vline</th>
+      <td><p>p value where vertical line to draw</p></td>
     </tr>
     <tr>
-      <th>value</th>
-      <td><p>A replacement value for this slot, which must match the slot
-definition.</p></td>
+      <th>bins</th>
+      <td><p>numeric. Total number of bins</p></td>
     </tr>
     <tr>
-      <th>i, j</th>
-      <td><p>indices for features (i) and samples (j) to extract.</p></td>
+      <th>color</th>
+      <td><p>character for bin outline colors</p></td>
+    </tr>
+    <tr>
+      <th>fill</th>
+      <td><p>character for bin fill colors</p></td>
+    </tr>
+    <tr>
+      <th>vline_linetype</th>
+      <td><p>character for vline linetype</p></td>
+    </tr>
+    <tr>
+      <th>vline_size</th>
+      <td><p>numeric for vline size</p></td>
+    </tr>
+    <tr>
+      <th>vline_color</th>
+      <td><p>character for vline color</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other arguments</p></td>
-    </tr>
-    <tr>
-      <th>k</th>
-      <td><p>column index for fdata</p></td>
-    </tr>
-    <tr>
-      <th>l</th>
-      <td><p>column index for pdata</p></td>
-    </tr>
-    <tr>
-      <th>drop</th>
-      <td><p>If TRUE the result is coerced to the lowest possible dimension</p></td>
+      <td><p>other args</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <div class='dont-index'><p><code>HTSet-class</code></p></div>
+    <p>ggplot</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#value">Value</a></li>
     </ul>
 
+    <h2>Author</h2>
+    <p>Chenghao Zhu</p>
   </div>
 </div>
 

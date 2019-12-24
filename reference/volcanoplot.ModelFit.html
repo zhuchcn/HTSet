@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • HTSet</title>
+<title>volcano plot — volcanoplot.ModelFit • HTSet</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,10 @@
 
 
 
-<meta property="og:title" content="Articles" />
+<meta property="og:title" content="volcano plot — volcanoplot.ModelFit" />
+<meta property="og:description" content="Creates a volcano plot for the returned result of
+model_fit" />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -54,7 +57,7 @@
   </head>
 
   <body>
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -110,17 +113,86 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>volcano plot</h1>
+    
+    <div class="hidden name"><code>volcanoplot.ModelFit.Rd</code></div>
     </div>
 
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <ul>
-        <li><a href="statistics.html">Differential analysis with HTSet</a></li>
-      </ul>
+    <div class="ref-description">
+    <p>Creates a volcano plot for the returned result of
+<code>model_fit</code></p>
     </div>
+
+    <pre class="usage"><span class='co'># S3 method for ModelFit</span>
+<span class='fu'>volcanoplot</span>(
+  <span class='no'>x</span>,
+  <span class='no'>hline</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"grey10"</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.75</span>,
+  <span class='kw'>hline_type</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>,
+  <span class='kw'>hline_color</span> <span class='kw'>=</span> <span class='st'>"grey30"</span>,
+  <span class='kw'>hline_size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>hline_alpha</span> <span class='kw'>=</span> <span class='fl'>0.75</span>,
+  <span class='no'>...</span>
+)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>ModelFit. Must be returned by <code>model_fit</code></p></td>
+    </tr>
+    <tr>
+      <th>hline</th>
+      <td><p>numeric. The p-value where the horizontal lines to draw. All
+values must between 0 and 1. If not given, serious lines will be drown at
+0.05, 0.01, 0.001, 0.0001 ...</p></td>
+    </tr>
+    <tr>
+      <th>color</th>
+      <td><p>character for point color</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>numeric for point alpha</p></td>
+    </tr>
+    <tr>
+      <th>hline_type</th>
+      <td><p>character for hline type. Default is dashed</p></td>
+    </tr>
+    <tr>
+      <th>hline_color</th>
+      <td><p>chracter for hline color.</p></td>
+    </tr>
+    <tr>
+      <th>hline_size</th>
+      <td><p>numeric for hline size</p></td>
+    </tr>
+    <tr>
+      <th>hline_alpha</th>
+      <td><p>numeric for hline alpha</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>other args</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>ggplot</p>
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+    </ul>
+
+    <h2>Author</h2>
+    <p>Chenghao Zhu</p>
   </div>
 </div>
 
