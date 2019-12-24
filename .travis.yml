@@ -3,6 +3,8 @@ r: bioc-release
 cache: packages
 
 r_packages:
+    - knitr
+    - kableExtra
     - covr
 
 bioc_packages:
