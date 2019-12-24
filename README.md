@@ -7,7 +7,7 @@
 
 [![Travis build
 status](https://travis-ci.org/zhuchcn/HTSet.svg?branch=master)](https://travis-ci.org/zhuchcn/HTSet)
-![codecov](https://codecov.io/gh/zhuchcn/HTSet/branch/master/graphs/badge.svg)
+[![codecov](https://codecov.io/gh/zhuchcn/HTSet/branch/master/graph/badge.svg)](https://codecov.io/gh/zhuchcn/HTSet)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->

@@ -16,14 +16,20 @@ Collate:
     HTSet-methods.R
     HTSet-accessors.R
     data.R
+    model_fit.R
 Imports:
+    methods,
     magrittr,
     dplyr,
     reshape2,
-    crayon
+    crayon,
+    ggplot2
 Suggests: 
     testthat (>= 2.1.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    limma,
+    edgeR,
+    DESeq2
 RoxygenNote: 7.0.0
 VignetteBuilder: knitr

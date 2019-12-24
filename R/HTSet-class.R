@@ -64,6 +64,7 @@ setClass(
 #' @seealso \code{\link{HTSet-class}}
 #' @author Chenghao Zhu
 #' @export
+#' @import methods
 HTSet = function(edata, fdata = NULL, pdata = NULL, assay = NULL){
     new("HTSet", edata = edata, fdata = fdata, pdata = pdata, assay = assay)
 }
@@ -71,7 +72,7 @@ HTSet = function(edata, fdata = NULL, pdata = NULL, assay = NULL){
 #' @keywords internal
 `%+%` = function(x, y) paste0(x,y)
 
-#' @import crayon
+#' @importFrom crayon blue
 setMethod(
     "show", signature = "HTSet",
     definition = function(object){

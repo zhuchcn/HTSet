@@ -1,4 +1,4 @@
-#' @rdname Extract
+#' @rdname HTSet-Extract
 #' @aliases $
 #' @title Extract or replace parts of an HTSet object
 #' @description Operators "$" and [[ extract or replace a slot, while [ extracts
@@ -12,7 +12,7 @@ setMethod("$", "HTSet", function(x, name){
     slot(x, name)
 })
 
-#' @rdname Extract
+#' @rdname HTSet-Extract
 #' @param value A replacement value for this slot, which must match the slot
 #' definition.
 #' @aliases $<-
@@ -24,7 +24,7 @@ setMethod(
     }
 )
 
-#' @rdname Extract
+#' @rdname HTSet-Extract
 #' @aliases [[<-
 #' @export
 setReplaceMethod(
@@ -36,20 +36,24 @@ setReplaceMethod(
     }
 )
 
-#' @rdname Extract
+#' @rdname HTSet-Extract
 #' @aliases [[
+#' @aliases [[,HTSet,character-method
 #' @export
-setMethod("[[", "HTSet", function(x, i, j, ...){
-    stopifnot(is.character(i))
-    slot(x, i)
-})
+setMethod(
+    "[[",
+    signature = signature(x = "HTSet", i = "character", j = "ANY"),
+    function(x, i, j, ...){
+        slot(x, i)
+    }
+)
 
-#' @rdname Extract
+#' @rdname HTSet-Extract
 #' @aliases [[<-
-#'
+#' @aliases [[<-,HTSet,character-method
 #' @export
 setReplaceMethod(
-    "[[", "HTSet",
+    "[[", signature = signature(x = "HTSet", i = "character", j = "ANY"),
     function(x, i, j, ..., value){
         stopifnot(is.character(i))
         slot(x, i) = value
@@ -58,7 +62,8 @@ setReplaceMethod(
     }
 )
 
-#' @rdname Extract
+#' @rdname HTSet-Extract
+#' @aliases [,HTSet-method
 #' @aliases [
 #' @param i,j indices for features (i) and samples (j) to extract.
 #' @param k column index for fdata
@@ -67,7 +72,7 @@ setReplaceMethod(
 #' @param ... other arguments
 #' @export
 setMethod(
-    "[", "HTSet",
+    "[", signature = signature(x = "HTSet", i = "ANY", j = "ANY"),
     function(x, i, j, k, l, ..., drop = FALSE) {
         x@edata = x@edata[i,j,drop = drop]
         x@pdata = x@pdata[j,l,drop = drop]

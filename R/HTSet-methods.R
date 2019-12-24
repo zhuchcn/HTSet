@@ -1,3 +1,5 @@
+utils::globalVariables(c(".", "logFC", "pval", "sample_id"))
+
 setGeneric("nsamples", function(x) standardGeneric("nsamples"))
 setGeneric("nfeatures", function(x) standardGeneric("nfeatures"))
 setGeneric("sampleNames", function(x) standardGeneric("sampleNames"))
