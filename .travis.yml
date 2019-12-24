@@ -1,8 +1,14 @@
 language: R
+r: bioc-release
 cache: packages
 
 r_packages:
     - covr
+
+bioc_packages:
+    - limma
+    - edgeR
+    - DESeq2
 
 before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
 
