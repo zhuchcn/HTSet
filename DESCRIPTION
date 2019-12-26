@@ -16,12 +16,16 @@ Collate:
     HTSet-methods.R
     HTSet-accessors.R
     data.R
+    lipidome-summarize.R
     model_fit.R
+    enrichment.R
 Imports:
     methods,
+    utils,
     magrittr,
     dplyr,
     reshape2,
+    stringr,
     crayon,
     ggplot2
 Suggests: 
