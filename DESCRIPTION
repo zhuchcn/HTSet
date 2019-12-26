@@ -18,7 +18,6 @@ Collate:
     data.R
     lipidome-summarize.R
     model_fit.R
-    enrichment.R
 Imports:
     methods,
     utils,
@@ -34,6 +33,7 @@ Suggests:
     rmarkdown,
     limma,
     edgeR,
-    DESeq2
+    DESeq2,
+    covr
 RoxygenNote: 7.0.0
 VignetteBuilder: knitr

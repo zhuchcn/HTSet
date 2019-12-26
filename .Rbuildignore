@@ -11,3 +11,4 @@
 ^pkgdown$
 ^vignettes$
 ^data-raw$
+^codecov\.yml$
