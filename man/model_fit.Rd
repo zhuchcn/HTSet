@@ -9,9 +9,8 @@ model_fit(
   design,
   coef,
   engine,
+  args = list(),
   transform,
-  voom = FALSE,
-  edger_model = "qlf",
   adjust.method = "BH"
 )
 }
@@ -27,16 +26,11 @@ be in the column names of design.}
 \item{engine}{character. The engine to perform statistical analysis.
 Supported are limma, edgeR, and DESeq2.}
 
+\item{args}{list. A list of argumnets to be parsed to the backend statistical
+engine.}
+
 \item{transform}{function. The transform to be passed to
 \code{\link{transform_by_sample}}. No transform is performed by default.}
-
-\item{voom}{bool. Whether to call \code{\link[limma]{voom}}. Only useful when
-using limma as the engine.}
-
-\item{edger_model}{character. Choose from "qlt" for quasi-likelihood negative
-binomial generalized log-linear model, or "lrt" for negative binomial
-generalized linear model with likelihood ratio test. See
-\code{\link[edgeR]{glmQLFit}} and \code{\link[edgeR]{glmLRT}}}
 
 \item{adjust.method}{character. Method used to adjust the p-values for
 multiple testing. See \code{\link{p.adjust}} for the complete list of
@@ -52,7 +46,7 @@ as following.
 
   \describe{
 
-  \item{\strong{logFC}}{estimat of the log2-fold-change corresponding to the
+  \item{\strong{logFC}}{estimate of the log2-fold-change corresponding to the
   effect.}
 
   \item{\strong{mean}}{average log2-expression for the gene/feature accross
@@ -62,10 +56,12 @@ as following.
   \item{\strong{stat}}{the statistic value of the corresponding test. When
   using limma, this is the t-statistic value, same as the t column in the
   result of \code{\link[limma]{topTable}}. For edgeR, this is the f-statistic
-  value, same as the F column in the result of edgeR's
-  \code{\link[edgeR]{topTags}}. As for DESeq2, this is the Wald statistic
-  value, same as the stat column in the output of DESeq2's
-  \code{\link[DESeq2]{results}}}
+  value for Quansi-likelihood test or the likelihood ratio statistic value
+  for likelihood ratio test. Same as the column F or RT in the result of
+  edgeR's \code{\link[edgeR]{topTags}}. As for DESeq2, this is the Wald
+  statistic value for Wald test or the difference in deviance between the
+  reduced model and the full model for likelihood ratio test. same as the
+  stat column in the output of DESeq2's \code{\link[DESeq2]{results}}.}
 
   \item{\strong{pval}}{raw p-value}
 
@@ -77,7 +73,11 @@ as following.
 
 \item{\strong{design}}{design matrix}
 
-\item{\strong{egine}}{package used for statistical test}
+\item{\strong{df}}{degree of freedoms}
+
+\item{\strong{distribution}}{The distribution that p values were calculated}
+
+\item{\strong{engine}}{package used for statistical test}
 
 \item{\strong{coef}}{coefficient tested}
 
@@ -91,6 +91,15 @@ or cooperate with the \code{\link[limma]{voom}} function to handle count
 data. The \code{\link[edgeR]{edgeR-package}} and
 \code{\link[DESeq2]{DESeq2-package}} performs negative binomial generalized
 linear model on count data.
+}
+\examples{
+data(exrna)
+design = model.matrix(~ Condition, data = exrna$pdata)
+coef = "ConditionSystemic Lupus Erythematosus"
+fit1 = model_fit(object = exrna, design = design, coef = coef, engine = "limma", args = list(voom = TRUE))
+fit2 = model_fit(object = exrna, design = design, coef = coef, engine = "edgeR")
+fit3 = model_fit(object = exrna, design = design, coef = coef, engine = "edgeR", args = list(model = "lrt"))
+fit4 = model_fit(object = exrna, design = design, coef = coef, engine = "DESeq2")
 }
 \seealso{
 \code{\link{HTSet-class}}

@@ -6,9 +6,12 @@
 \alias{$<-}
 \alias{$<-,HTSet-method}
 \alias{[[<-}
-\alias{[[,HTSet,character-method}
+\alias{[[,HTSet,character,ANY-method}
 \alias{[[}
+\alias{[[,HTSet,character-method}
+\alias{[[<-,HTSet,character,ANY-method}
 \alias{[[<-,HTSet,character-method}
+\alias{[,HTSet,ANY,ANY,ANY-method}
 \alias{[,HTSet-method}
 \alias{[}
 \title{Extract or replace parts of an HTSet object}
@@ -19,11 +22,11 @@
 
 \S4method{$}{HTSet}(x, name) <- value
 
-\S4method{[[}{HTSet,character}(x, i, j, ...)
+\S4method{[[}{HTSet,character,ANY}(x, i, j, ...)
 
-\S4method{[[}{HTSet,character}(x, i, j, ...) <- value
+\S4method{[[}{HTSet,character,ANY}(x, i, j, ...) <- value
 
-\S4method{[}{HTSet}(x, i, j, k, l, ..., drop = FALSE)
+\S4method{[}{HTSet,ANY,ANY,ANY}(x, i, j, k, l, ..., drop = FALSE)
 }
 \arguments{
 \item{x}{\code{\link{HTSet-class}}.}

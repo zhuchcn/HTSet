@@ -34,15 +34,33 @@ library(HTSet)
 
 ## introduction
 
-High through-put experiments such as RNA-seq, proteomics, and metaboliomics often generate hundrands to millions of features. For experiments such as metabolomics and proteomics in MRM mode that generates continous data, linear model is usually perferred, while for experiments that generates counts data, such as RNA-seq, the negative binomial generalized linear model methods are popular. In this vigeneete, we will go through several popular methods and models that are widely used in fields such as RNA-seq. The function [`model_fit()`](https://zhuchcn.github.io/HTSet/reference/model_fit.html) is a wrapper of three bioconductor packages [limma](https://bioconductor.org/packages/release/bioc/html/limma.html), [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html), and [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) that performs differnetial analysis on a `HTSet` object and returns the result in an organized structure.
+High through-put experiments such as RNA-seq, proteomics, and metaboliomics estimate the abundance/concentration of hundrands to millions of features. Very commonly, researchers would like to answer questions such as which gene (or protein, metabolites) were differentially expressed or have differential abundance in treatment groups. Linear model and generalized linear model are widely used because they are highly flaxible to be adopted to different study designs. The `HTSet` package has a wrapper function [`model_fit()`](https://zhuchcn.github.io/HTSet/reference/model_fit.html) of three popular bioconductor packages, including [limma](https://bioconductor.org/packages/release/bioc/html/limma.html), [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html), and [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html), that performs differnetial analysis on a high through-put experiment dataset, and it returns the result in an organized structure.
 
 The basic usage of [`model_fit()`](https://zhuchcn.github.io/HTSet/reference/model_fit.html) is below.
 
 ```{r, eval=FALSE}
-model_fit(object, design, coef, engine)
+model_fit(object, design, coef, engine, args)
 ```
 
-`object` must be a `HTSet` object. `design` is the study design matrix, usually returned by the `model.matrix` function. `coef` is the coefficient to perform statistical test. `engine` must be one of the three backend statistical package mentioned above. 
+`object` must be a `HTSet` object. `design` is the study design matrix, usually returned by the `model.matrix` function. `coef` is the coefficient to perform statistical test. `engine` must be one of the three backend statistical package mentioned above. `args` is a list of additional parameters to be parsed to the backend statistical engine.
+
+`model_fit` returns a list-like object. The elemenets that it contains are listed below.
+
++ **results:** A `data.frame` of the statistical test results for each gene/feature in each row. It has 5 columns. `logFC` has the estimate of the log2-fold-change corresponding to the effect. `mean` has the average lo2-expression for the gene/feature accross all samples. This is the `AveExpr` column in limma's `topTable` or `baseMean` in DESeq2's `results`. `stat` is the statistic value of the corresponding test. When using limma, this is the t-statistic value, same as the t column in the result of `topTable`. For edgeR, this is the f-statistic value for Quansi-likelihood test or the likelihood ratio statistic value for likelihood ratio test. Same as the column F or RT in the result of edgeR's `topTags`. As for DESeq2, this is the Wald statistic value for Wald test or the difference in deviance between the reduced model and the full model for likelihood ratio test. same as the `stat` column in the output of DESeq2's results. `pval` is the raw o-value and `padj` is the p-value after correction for multiple testing.
+
++ **adjust.method:** The method used to correct for multiple testing.
+
++ **design:** The design matrix
+
++ **df:** Degree of freedom for each gene/feature. 
+
++ **distribution:** The distribution which the `stat` column in `results` is compared to generate the `pval`. This is `t` for t distribution for limma or DESeq2 with Wald test when `useT` eqauls to `TRUE`, `f` for f distribution for Quansi-likelihood test with edgeR, `chisq` for chi-squared distribution for likelihood ratio test with edgeR or DESeq2, and `norm` for DESeq2 with Wald test when `useT` equals to `FALSE`.
+
++ **engin:** The statistical package used as backend engine.
+
++ **coef:** The coefficient tested
+
++ **params:** Additional parameters parsed to `model_fit`
 
 The HTSet package has two dataset included. They both can be loaded using the `data()` function. 
 
@@ -88,11 +106,14 @@ We are going to test whether each gene is expressed differently between patinets
 
 ```{r}
 coef = "ConditionSystemic Lupus Erythematosus"
-fit1 = model_fit(exrna, design = design, coef = coef, engine = "limma", voom = TRUE)
+fit1 = model_fit(exrna, design = design, coef = coef, engine = "limma", args = list(voom = TRUE))
 ```
 
+When `args` has an element named `voom`, `model_fit` calls the three functions `voom`, `lmFit` and `eBayes` in order. Additional arguments can be parsed to each of the three functions by assigning a list as value to the key of the corresponding step. For example, `voom`'s mean-variance trend plot was disabled by default. To enable the plot, parse it in a list to voom, as shown below.
+
 ```{r}
-fit1$results[order(fit1$results$pval),] %>% head %>% kable()
+fit1_2 = model_fit(exrna, design = design, coef = coef, engine = "limma", 
+                   args = list(voom = list(plot = TRUE)))
 ```
 
 Draw a volcano plot
@@ -141,6 +162,18 @@ To use DESeq2 to perform negative binomial glm, simply set `engine = "DESeq2"`
 fit3 = model_fit(exrna, design = design, coef = coef, engine = "DESeq2")
 ```
 
+Additional parameters can be parsed to the `args` as a list named as `DESeq`. The parameters will be used internally by the `DESeq` function. Use `?DESeq` to see all parameters that can be used. For example, to use t distribution to estimate p-values:
+
+```{r}
+fit3_2 = model_fit(
+    exrna, design = design, coef = coef, engin = "DESeq2",
+    args = list(
+        DESeq = list(useT = TRUE)
+    )
+)
+```
+
+
 ```{r}
 fit3$results[order(fit3$results$pval),] %>% head %>% kable()
 ```
@@ -159,14 +192,10 @@ hist(fit3, vline = 0.05)
 
 ### edgeR
 
-Similar to DESeq2, edgeR also performes negative binomial glm test. Two models are provided by edgeR, the quasi-likelihood test and likelihood ratio test.
-
-Quasi-likelihood test
-
-Using the wrapper function `model_fit` in HTSet
+Similar to DESeq2, edgeR also performes negative binomial glm test. Two models are provided by edgeR, the quasi-likelihood test (QLF) and likelihood ratio test (LRT). `model_fit` uses QLF by default.
 
 ```{r}
-fit4 = model_fit(exrna, design = design, coef = coef, engine = "edgeR", edger_model = "qlf")
+fit4 = model_fit(exrna, design = design, coef = coef, engine = "edgeR")
 fit4$results[order(fit4$results$pval),] %>% head %>% kable()
 ```
 
@@ -182,10 +211,11 @@ P value histogram
 hist(fit4, vline = 0.05)
 ```
 
-Likelihood ratio test
+To use LRT, you need to specify it in the `args`. 
 
 ```{r}
-fit5 = model_fit(exrna, design = design, coef = coef, engine = "edgeR", edger_model = "lrt")
+fit5 = model_fit(exrna, design = design, coef = coef, engine = "edgeR",
+                 args = list(model = "lrt"))
 fit5$results[order(fit5$results$pval),] %>% head %>% kable()
 ```
 

@@ -1,3 +1,35 @@
+#' @keywords internal
+setDefault = function(x, key, args){
+    if(is.null(x[[key]]))
+        x[[key]] = list()
+    if(!is.list(x[[key]]))
+        stop("args must be a list")
+    for(k in names(args)){
+        if(is.null(x[[key]][[k]]))
+            x[[key]][[k]] = args[[k]]
+    }
+    return(x)
+}
+
+#' @keywords internal
+#' @title validate args in options
+#' @description validate args for \code{\link{model_fit}} in given options
+#' @param args list
+#' @param opts character
+validateArgsInOptions = function(args, opts){
+    if(any(! names(args) %in% opts)){
+        if (length(opts) == 1){
+            msg = "any argument in \"args\" not equal to \"" %+% opts %+% "\" is ignored"
+        } else {
+            str_opts = "\"" %+% paste(opts[1:length(opts)-1], collapse = "\", \"") %+%
+                "\" or \"" %+% opts[length(opts)] %+% "\""
+            msg = "any argument in \"args\" not equal to " %+% str_opts %+% " is ignored"
+        }
+        warning(msg)
+    }
+    return(0)
+}
+
 #' @title statistic tests for HTSet
 #' @description This is a wrapper of several widely used statistical method for
 #' high through-put experimental data such as RNAseq. The
@@ -14,12 +46,8 @@
 #' be in the column names of design.
 #' @param engine character. The engine to perform statistical analysis.
 #' Supported are limma, edgeR, and DESeq2.
-#' @param voom bool. Whether to call \code{\link[limma]{voom}}. Only useful when
-#' using limma as the engine.
-#' @param edger_model character. Choose from "qlt" for quasi-likelihood negative
-#' binomial generalized log-linear model, or "lrt" for negative binomial
-#' generalized linear model with likelihood ratio test. See
-#' \code{\link[edgeR]{glmQLFit}} and \code{\link[edgeR]{glmLRT}}
+#' @param args list. A list of argumnets to be parsed to the backend statistical
+#' engine.
 #' @param adjust.method character. Method used to adjust the p-values for
 #' multiple testing. See \code{\link{p.adjust}} for the complete list of
 #' supported methods. Default is "BH" for Benjamini-Hochberg test.
@@ -35,7 +63,7 @@
 #'
 #'   \describe{
 #'
-#'   \item{\strong{logFC}}{estimat of the log2-fold-change corresponding to the
+#'   \item{\strong{logFC}}{estimate of the log2-fold-change corresponding to the
 #'   effect.}
 #'
 #'   \item{\strong{mean}}{average log2-expression for the gene/feature accross
@@ -45,10 +73,12 @@
 #'   \item{\strong{stat}}{the statistic value of the corresponding test. When
 #'   using limma, this is the t-statistic value, same as the t column in the
 #'   result of \code{\link[limma]{topTable}}. For edgeR, this is the f-statistic
-#'   value, same as the F column in the result of edgeR's
-#'   \code{\link[edgeR]{topTags}}. As for DESeq2, this is the Wald statistic
-#'   value, same as the stat column in the output of DESeq2's
-#'   \code{\link[DESeq2]{results}}}
+#'   value for Quansi-likelihood test or the likelihood ratio statistic value
+#'   for likelihood ratio test. Same as the column F or RT in the result of
+#'   edgeR's \code{\link[edgeR]{topTags}}. As for DESeq2, this is the Wald
+#'   statistic value for Wald test or the difference in deviance between the
+#'   reduced model and the full model for likelihood ratio test. same as the
+#'   stat column in the output of DESeq2's \code{\link[DESeq2]{results}}.}
 #'
 #'   \item{\strong{pval}}{raw p-value}
 #'
@@ -60,7 +90,11 @@
 #'
 #' \item{\strong{design}}{design matrix}
 #'
-#' \item{\strong{egine}}{package used for statistical test}
+#' \item{\strong{df}}{degree of freedoms}
+#'
+#' \item{\strong{distribution}}{The distribution that p values were calculated}
+#'
+#' \item{\strong{engine}}{package used for statistical test}
 #'
 #' \item{\strong{coef}}{coefficient tested}
 #'
@@ -77,8 +111,17 @@
 #' @importFrom stats p.adjust.methods
 #' @export
 #' @author Chenghao Zhu
-model_fit = function(object, design, coef, engine, transform, voom = FALSE,
-                     edger_model = "qlf", adjust.method = "BH"){
+#'
+#' @examples
+#' data(exrna)
+#' design = model.matrix(~ Condition, data = exrna$pdata)
+#' coef = "ConditionSystemic Lupus Erythematosus"
+#' fit1 = model_fit(object = exrna, design = design, coef = coef, engine = "limma", args = list(voom = TRUE))
+#' fit2 = model_fit(object = exrna, design = design, coef = coef, engine = "edgeR")
+#' fit3 = model_fit(object = exrna, design = design, coef = coef, engine = "edgeR", args = list(model = "lrt"))
+#' fit4 = model_fit(object = exrna, design = design, coef = coef, engine = "DESeq2")
+model_fit = function(object, design, coef, engine, args = list(), transform,
+                     adjust.method = "BH"){
     if(!is(object, "HTSet")){
         stop("model_fit only works for HTSet objects.")
     }
@@ -100,44 +143,53 @@ model_fit = function(object, design, coef, engine, transform, voom = FALSE,
     if(!adjust.method %in% p.adjust.methods){
         stop("adjust.method not valid")
     }
-    if(length(edger_model) != 1){
-        stop("edger_model not valid")
-    }
 
     if(!missing(transform)){
         stopifnot(is.function(transform))
         object = transform_by_sample(object, transform)
     }
 
-    if(engine == "limma"){
-        res = .fit_limma(object, design, coef, voom, adjust.method)
-    } else if(engine == "edgeR"){
-        res = .fit_edger(object, design, coef, edger_model, adjust.method)
-    } else if(engine == "DESeq2"){
-        res = .fit_deseq2(object, design, coef, adjust.method)
-    } else {
+    .fit = switch(
+        engine,
+        "limma"  = .fit_limma,
+        "edgeR"  = .fit_edger,
+        "DESeq2" = .fit_deseq2,
         stop("The engines supported are limma, edgeR, and DESeq2")
-    }
+    )
+    res = .fit(object, design, coef, adjust.method, args)
     return(res)
 }
 
 #' @keywords internal
-.fit_limma = function(object, design, coef, voom, adjust.method){
-    if(!requireNamespace("limma")){
+.fit_limma = function(object, design, coef, adjust.method, args){
+    .args = args
+    if(!requireNamespace("limma"))
         stop("Package limma not installed")
-    }
-    if(voom){
-        if(!requireNamespace("edgeR")){
+    validateArgsInOptions(args, c("voom", "lmFit", "eBayes"))
+    if(identical(args$voom, TRUE))
+        args$voom = list()
+    if(identical(args$voom, FALSE))
+        args$voom = NULL
+
+    if(is.null(args$voom)){
+        y = object$edata
+    } else {
+        if(!is.list(args$voom))
+            stop("args must be a nested list")
+        if(!requireNamespace("edgeR"))
             stop("Package edgeR not installed")
-        }
         y = edgeR::DGEList(object$edata)
         y = edgeR::calcNormFactors(y)
-        y = limma::voom(y, design, plot = FALSE)
-    } else {
-        y = object$edata
+        args$voom$counts = y
+        args$design = design
+        y = do.call(limma::voom, args$voom)
     }
-    fit = limma::lmFit(y, design)
-    fit = limma::eBayes(fit)
+    args = setDefault(args, "lmFit", list(object = y, design = design))
+    fit = do.call(limma::lmFit, args$lmFit)
+
+    args = setDefault(args, "eBayes", list(fit = fit))
+    fit = do.call(limma::eBayes, args$eBayes)
+
     res = limma::topTable(fit, coef = coef, number = Inf, sort.by = "none",
                           adjust.method = adjust.method)
     structure(
@@ -150,12 +202,15 @@ model_fit = function(object, design, coef, engine, transform, voom = FALSE,
                 padj  = res$adj.P.Val,
                 row.names = rownames(res)
             ),
+            df = list(
+                df.residual = fit$df.residual,
+                df.total = fit$df.total
+            ),
+            distribution = "t",
             adjust.method = adjust.method,
             design = design,
             coef = coef,
-            params = list(
-                voom = voom
-            ),
+            params = .args,
             engine = "limma"
         ),
         class = "ModelFit"
@@ -163,21 +218,50 @@ model_fit = function(object, design, coef, engine, transform, voom = FALSE,
 }
 
 #' @keywords internal
-.fit_edger = function(object, design, coef, model, adjust.method){
+.fit_edger = function(object, design, coef, adjust.method, args){
+    .args = args
+    validateArgsInOptions(args, c("calcNormFactors", "estimateDisp", "model"))
     if(!requireNamespace("edgeR")){
         stop("Package edgeR not installed")
     }
     y = edgeR::DGEList(counts = object$edata)
-    y = edgeR::calcNormFactors(y)
-    y = edgeR::estimateDisp(y, design)
-    if(model == "qlf"){
-        fit = edgeR::glmQLFit(y, design)
-        fit = edgeR::glmQLFTest(fit, coef = coef)
-    } else if (model == "lrt"){
-        fit = edgeR::glmFit(y, design)
-        fit = edgeR::glmLRT(fit, coef = coef)
+
+    args = setDefault(args, "calcNormFactors", list(object = y))
+    y = do.call(edgeR::calcNormFactors, args$calcNormFactors)
+
+    args = setDefault(args, "estimateDisp", list(y = y, design = design))
+    y = do.call(edgeR::estimateDisp, args$estimateDisp)
+
+    if(is.null(args$model))
+        args$model = "qlf"
+    if(length(args$model) > 1)
+        stop("args$model invalid")
+    if(args$model == "qlf"){
+        args = setDefault(args, "glmQLFit", list(y = y, design = design))
+        fit = do.call(edgeR::glmQLFit, args$glmQLFit)
+
+        args = setDefault(args, "glmQLFTest", list(glmfit = fit, coef = coef))
+        fit = do.call(edgeR::glmQLFTest, args$glmQLFTest)
+        df = list(
+            df.total = fit$df.total,
+            df.test = fit$df.test,
+            df.residual = fit$df.residual
+        )
+        distribution = "f"
+    } else if (args$model == "lrt"){
+        args = setDefault(args, "glmFit", list(y = y , design = design))
+        fit = do.call(edgeR::glmFit, args$glmFit)
+
+        args = setDefault(args, "glmLRT", list(glmfit = fit, coef = coef))
+        fit = do.call(edgeR::glmLRT, args$glmLRT)
+
+        df = list(
+            df.test = fit$df.test,
+            df.residual = fit$df.residual
+        )
+        distribution = "chisq"
     } else {
-        stop("edger_model " %+% model %+% " not valid")
+        stop("edgeR model " %+% args$model %+% " not valid")
     }
     res = edgeR::topTags(fit, n = Inf, sort.by = "none")
     structure(
@@ -185,17 +269,17 @@ model_fit = function(object, design, coef, engine, transform, voom = FALSE,
             results = data.frame(
                 logFC = res$table$logFC,
                 mean  = res$table$logCPM,
-                stat  = res$table$F,
+                stat  = {if(args$model == "qlf") res$table$F else res$table$LR},
                 pval  = res$table$PValue,
                 padj  = res$table$FDR,
                 row.names = rownames(res$table)
             ),
+            df = df,
+            distribution = distribution,
             adjust.method = adjust.method,
             design = design,
             coef = coef,
-            params = list(
-                edger_model = model
-            ),
+            params = .args,
             engine = "edgeR"
         ),
         class = "ModelFit"
@@ -203,14 +287,30 @@ model_fit = function(object, design, coef, engine, transform, voom = FALSE,
 }
 
 #' @keywords internal
-.fit_deseq2 = function(object, design, coef, adjust.method){
+.fit_deseq2 = function(object, design, coef, adjust.method, args){
+    .arg = args
+    validateArgsInOptions(args, c("DESeq"))
     if(!requireNamespace("DESeq2")){
         stop("Package DESeq2 not installed")
     }
     de = DESeq2::DESeqDataSetFromMatrix(object$edata, object$pdata, design)
-    de = DESeq2::DESeq(de)
+
+    args = setDefault(args, "DESeq", list(object = de, test = "Wald", useT = FALSE))
+    de = do.call(DESeq2::DESeq, args$DESeq)
     resultName = DESeq2::resultsNames(de)[which(colnames(design) == coef)]
     res = DESeq2::results(de, name = resultName, pAdjustMethod = adjust.method)
+
+    if(args$DESeq$test == "Wald"){
+        df = list(df = de@rowRanges@elementMetadata$tDegreesFreedom)
+        if(args$DESeq$useT){
+            distribution = 't'
+        } else {
+            distribution = "norm"
+        }
+    } else {
+        df = list(df = rep(ncol(design - ncol(args$DESeq$reduced)), nfeatures(object)))
+        distribution = "chisq"
+    }
     structure(
         list(
             results = data.frame(
@@ -221,6 +321,8 @@ model_fit = function(object, design, coef, engine, transform, voom = FALSE,
                 padj  = res$padj,
                 row.names = rownames(res)
             ),
+            df = df,
+            distribution = distribution,
             adjust.method = adjust.method,
             design = design,
             coef = coef,
