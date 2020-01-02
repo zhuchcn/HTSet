@@ -138,9 +138,8 @@ linear model on count data.</p>
   <span class='no'>design</span>,
   <span class='no'>coef</span>,
   <span class='no'>engine</span>,
+  <span class='kw'>args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
   <span class='no'>transform</span>,
-  <span class='kw'>voom</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>edger_model</span> <span class='kw'>=</span> <span class='st'>"qlf"</span>,
   <span class='kw'>adjust.method</span> <span class='kw'>=</span> <span class='st'>"BH"</span>
 )</pre>
 
@@ -167,21 +166,14 @@ be in the column names of design.</p></td>
 Supported are limma, edgeR, and DESeq2.</p></td>
     </tr>
     <tr>
+      <th>args</th>
+      <td><p>list. A list of argumnets to be parsed to the backend statistical
+engine.</p></td>
+    </tr>
+    <tr>
       <th>transform</th>
       <td><p>function. The transform to be passed to
 <code>transform_by_sample</code>. No transform is performed by default.</p></td>
-    </tr>
-    <tr>
-      <th>voom</th>
-      <td><p>bool. Whether to call <code><a href='https://rdrr.io/pkg/limma/man/voom.html'>voom</a></code>. Only useful when
-using limma as the engine.</p></td>
-    </tr>
-    <tr>
-      <th>edger_model</th>
-      <td><p>character. Choose from "qlt" for quasi-likelihood negative
-binomial generalized log-linear model, or "lrt" for negative binomial
-generalized linear model with likelihood ratio test. See
-<code><a href='https://rdrr.io/pkg/edgeR/man/glmQLFTest.html'>glmQLFit</a></code> and <code><a href='https://rdrr.io/pkg/edgeR/man/glmfit.html'>glmLRT</a></code></p></td>
     </tr>
     <tr>
       <th>adjust.method</th>
@@ -196,22 +188,28 @@ supported methods. Default is "BH" for Benjamini-Hochberg test.</p></td>
     <p>A list-like S3 class ModelFit object is returned with the elements
 as following.</p>
 <dt><strong>results</strong></dt><dd><p>A data.frame of the statistical test results for each gene/
-  feature.  <dl class='dl-horizontal'>  <dt><strong>logFC</strong></dt><dd><p>estimat of the log2-fold-change corresponding to the
+  feature.  <dl class='dl-horizontal'>  <dt><strong>logFC</strong></dt><dd><p>estimate of the log2-fold-change corresponding to the
   effect.</p></dd>  <dt><strong>mean</strong></dt><dd><p>average log2-expression for the gene/feature accross
   all samples. Same as the AveExpr in limma's <code><a href='https://rdrr.io/pkg/limma/man/toptable.html'>topTable</a></code>,
   and the baseMean in DESeq2's <code><a href='https://rdrr.io/pkg/DESeq2/man/results.html'>results</a></code>.</p></dd>  <dt><strong>stat</strong></dt><dd><p>the statistic value of the corresponding test. When
   using limma, this is the t-statistic value, same as the t column in the
   result of <code><a href='https://rdrr.io/pkg/limma/man/toptable.html'>topTable</a></code>. For edgeR, this is the f-statistic
-  value, same as the F column in the result of edgeR's
-  <code><a href='https://rdrr.io/pkg/edgeR/man/topTags.html'>topTags</a></code>. As for DESeq2, this is the Wald statistic
-  value, same as the stat column in the output of DESeq2's
-  <code><a href='https://rdrr.io/pkg/DESeq2/man/results.html'>results</a></code></p></dd>  <dt><strong>pval</strong></dt><dd><p>raw p-value</p></dd>  <dt><strong>padj</strong></dt><dd><p>adjusted p-value</p></dd></dl></p></dd>
+  value for Quansi-likelihood test or the likelihood ratio statistic value
+  for likelihood ratio test. Same as the column F or RT in the result of
+  edgeR's <code><a href='https://rdrr.io/pkg/edgeR/man/topTags.html'>topTags</a></code>. As for DESeq2, this is the Wald
+  statistic value for Wald test or the difference in deviance between the
+  reduced model and the full model for likelihood ratio test. same as the
+  stat column in the output of DESeq2's <code><a href='https://rdrr.io/pkg/DESeq2/man/results.html'>results</a></code>.</p></dd>  <dt><strong>pval</strong></dt><dd><p>raw p-value</p></dd>  <dt><strong>padj</strong></dt><dd><p>adjusted p-value</p></dd></dl></p></dd>
 
 <dt><strong>adjust.method</strong></dt><dd><p>Method used to correct for multiple testing</p></dd>
 
 <dt><strong>design</strong></dt><dd><p>design matrix</p></dd>
 
-<dt><strong>egine</strong></dt><dd><p>package used for statistical test</p></dd>
+<dt><strong>df</strong></dt><dd><p>degree of freedoms</p></dd>
+
+<dt><strong>distribution</strong></dt><dd><p>The distribution that p values were calculated</p></dd>
+
+<dt><strong>engine</strong></dt><dd><p>package used for statistical test</p></dd>
 
 <dt><strong>coef</strong></dt><dd><p>coefficient tested</p></dd>
 
@@ -226,6 +224,15 @@ as following.</p>
 <code><a href='https://rdrr.io/pkg/edgeR/man/glmfit.html'>glmLRT</a></code>
 <code><a href='https://rdrr.io/pkg/DESeq2/man/DESeq.html'>DESeq</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>exrna</span>)
+<span class='no'>design</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/model.matrix.html'>model.matrix</a></span>(~ <span class='no'>Condition</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>exrna</span>$<span class='no'>pdata</span>)
+<span class='no'>coef</span> <span class='kw'>=</span> <span class='st'>"ConditionSystemic Lupus Erythematosus"</span>
+<span class='no'>fit1</span> <span class='kw'>=</span> <span class='fu'>model_fit</span>(<span class='kw'>object</span> <span class='kw'>=</span> <span class='no'>exrna</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='no'>design</span>, <span class='kw'>coef</span> <span class='kw'>=</span> <span class='no'>coef</span>, <span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"limma"</span>, <span class='kw'>args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>voom</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: limma</span></div><div class='output co'>#&gt; <span class='message'>Loading required namespace: edgeR</span></div><div class='input'><span class='no'>fit2</span> <span class='kw'>=</span> <span class='fu'>model_fit</span>(<span class='kw'>object</span> <span class='kw'>=</span> <span class='no'>exrna</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='no'>design</span>, <span class='kw'>coef</span> <span class='kw'>=</span> <span class='no'>coef</span>, <span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"edgeR"</span>)
+<span class='no'>fit3</span> <span class='kw'>=</span> <span class='fu'>model_fit</span>(<span class='kw'>object</span> <span class='kw'>=</span> <span class='no'>exrna</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='no'>design</span>, <span class='kw'>coef</span> <span class='kw'>=</span> <span class='no'>coef</span>, <span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"edgeR"</span>, <span class='kw'>args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"lrt"</span>))
+<span class='no'>fit4</span> <span class='kw'>=</span> <span class='fu'>model_fit</span>(<span class='kw'>object</span> <span class='kw'>=</span> <span class='no'>exrna</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='no'>design</span>, <span class='kw'>coef</span> <span class='kw'>=</span> <span class='no'>coef</span>, <span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"DESeq2"</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: DESeq2</span></div><div class='output co'>#&gt; <span class='message'>using supplied model matrix</span></div><div class='output co'>#&gt; <span class='message'>estimating size factors</span></div><div class='output co'>#&gt; <span class='message'>estimating dispersions</span></div><div class='output co'>#&gt; <span class='message'>gene-wise dispersion estimates</span></div><div class='output co'>#&gt; <span class='message'>mean-dispersion relationship</span></div><div class='output co'>#&gt; <span class='message'>-- note: fitType='parametric', but the dispersion trend was not well captured by the</span>
+#&gt; <span class='message'>   function: y = a/x + b, and a local regression fit was automatically substituted.</span>
+#&gt; <span class='message'>   specify fitType='local' or 'mean' to avoid this message next time.</span></div><div class='output co'>#&gt; <span class='message'>final dispersion estimates</span></div><div class='output co'>#&gt; <span class='message'>fitting model and testing</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -233,6 +240,7 @@ as following.</p>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
     <h2>Author</h2>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract or replace parts of an HTSet object — $,HTSet-method • HTSet</title>
+<title>validate args in options — validateArgsInOptions • HTSet</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,8 @@
 
 
 
-<meta property="og:title" content="Extract or replace parts of an HTSet object — $,HTSet-method" />
-<meta property="og:description" content="Operators &quot;$&quot; and [[ extract or replace a slot, while [ extracts
-a subset of the HTSet-class object in a similar manner of
-subset_features and subset_samples." />
+<meta property="og:title" content="validate args in options — validateArgsInOptions" />
+<meta property="og:description" content="validate args for model_fit in given options" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -114,83 +112,36 @@ subset_features and subset_samples." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract or replace parts of an HTSet object</h1>
+    <h1>validate args in options</h1>
     
-    <div class="hidden name"><code>HTSet-Extract.Rd</code></div>
+    <div class="hidden name"><code>validateArgsInOptions.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Operators "$" and [[ extract or replace a slot, while [ extracts
-a subset of the <code>HTSet-class</code> object in a similar manner of
-<code>subset_features</code> and <code>subset_samples</code>.</p>
+    <p>validate args for <code>model_fit</code> in given options</p>
     </div>
 
-    <pre class="usage"># S4 method for HTSet
-$(x, name)
-
-# S4 method for HTSet
-$(x, name)
-
-# S4 method for HTSet
-$(x, name) <- value
-
-# S4 method for HTSet,character,ANY
-[[(x, i, j, ...)
-
-# S4 method for HTSet,character,ANY
-[[(x, i, j, ...) <- value
-
-# S4 method for HTSet,ANY,ANY,ANY
-[(x, i, j, k, l, ..., drop = FALSE)</pre>
+    <pre class="usage"><span class='fu'>validateArgsInOptions</span>(<span class='no'>args</span>, <span class='no'>opts</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p><code>HTSet-class</code>.</p></td>
+      <th>args</th>
+      <td><p>list</p></td>
     </tr>
     <tr>
-      <th>name</th>
-      <td><p>The name of the slot.</p></td>
-    </tr>
-    <tr>
-      <th>value</th>
-      <td><p>A replacement value for this slot, which must match the slot
-definition.</p></td>
-    </tr>
-    <tr>
-      <th>i, j</th>
-      <td><p>indices for features (i) and samples (j) to extract.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>other arguments</p></td>
-    </tr>
-    <tr>
-      <th>k</th>
-      <td><p>column index for fdata</p></td>
-    </tr>
-    <tr>
-      <th>l</th>
-      <td><p>column index for pdata</p></td>
-    </tr>
-    <tr>
-      <th>drop</th>
-      <td><p>If TRUE the result is coerced to the lowest possible dimension</p></td>
+      <th>opts</th>
+      <td><p>character</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code>HTSet-class</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#see-also">See also</a></li>
     </ul>
 
   </div>
