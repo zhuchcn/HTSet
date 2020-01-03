@@ -18,6 +18,7 @@ Collate:
     data.R
     lipidome-summarize.R
     model_fit.R
+    enrichment.R
 Imports:
     methods,
     utils,
@@ -26,7 +27,8 @@ Imports:
     reshape2,
     stringr,
     crayon,
-    ggplot2
+    ggplot2,
+    cowplot
 Suggests: 
     testthat (>= 2.1.0),
     knitr,

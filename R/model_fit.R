@@ -202,10 +202,7 @@ model_fit = function(object, design, coef, engine, args = list(), transform,
                 padj  = res$adj.P.Val,
                 row.names = rownames(res)
             ),
-            df = list(
-                df.residual = fit$df.residual,
-                df.total = fit$df.total
-            ),
+            df = fit$df.total,
             distribution = "t",
             adjust.method = adjust.method,
             design = design,
@@ -242,10 +239,10 @@ model_fit = function(object, design, coef, engine, args = list(), transform,
 
         args = setDefault(args, "glmQLFTest", list(glmfit = fit, coef = coef))
         fit = do.call(edgeR::glmQLFTest, args$glmQLFTest)
+        # from edgeR::glmQLFTest
         df = list(
-            df.total = fit$df.total,
-            df.test = fit$df.test,
-            df.residual = fit$df.residual
+            df1 = fit$df.test,
+            df2 = fit$df.total
         )
         distribution = "f"
     } else if (args$model == "lrt"){
@@ -255,10 +252,7 @@ model_fit = function(object, design, coef, engine, args = list(), transform,
         args = setDefault(args, "glmLRT", list(glmfit = fit, coef = coef))
         fit = do.call(edgeR::glmLRT, args$glmLRT)
 
-        df = list(
-            df.test = fit$df.test,
-            df.residual = fit$df.residual
-        )
+        df = fit$df.test
         distribution = "chisq"
     } else {
         stop("edgeR model " %+% args$model %+% " not valid")
@@ -288,7 +282,7 @@ model_fit = function(object, design, coef, engine, args = list(), transform,
 
 #' @keywords internal
 .fit_deseq2 = function(object, design, coef, adjust.method, args){
-    .arg = args
+    .args = args
     validateArgsInOptions(args, c("DESeq"))
     if(!requireNamespace("DESeq2")){
         stop("Package DESeq2 not installed")
@@ -301,14 +295,14 @@ model_fit = function(object, design, coef, engine, args = list(), transform,
     res = DESeq2::results(de, name = resultName, pAdjustMethod = adjust.method)
 
     if(args$DESeq$test == "Wald"){
-        df = list(df = de@rowRanges@elementMetadata$tDegreesFreedom)
+        df = de@rowRanges@elementMetadata$tDegreesFreedom
         if(args$DESeq$useT){
             distribution = 't'
         } else {
             distribution = "norm"
         }
     } else {
-        df = list(df = rep(ncol(design - ncol(args$DESeq$reduced)), nfeatures(object)))
+        df = rep(ncol(design - ncol(args$DESeq$reduced)), nfeatures(object))
         distribution = "chisq"
     }
     structure(
@@ -326,7 +320,7 @@ model_fit = function(object, design, coef, engine, args = list(), transform,
             adjust.method = adjust.method,
             design = design,
             coef = coef,
-            params = list(),
+            params = .args,
             engine = "DESeq2"
         ),
         class = "ModelFit"

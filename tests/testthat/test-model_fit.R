@@ -1,8 +1,7 @@
 test_that("model_fit failure", {
     design = model.matrix(~Condition, data = exrna$pdata)
     coef = "ConditionSystemic Lupus Erythematosus"
-    expect_error(model_fit(mtcars, design, coef, "limma"),
-                 regexp = "*HTSet objects*")
+    expect_error(model_fit(mtcars, design, coef, "limma"))
     expect_error(model_fit(exrna, design, c("A", "B"), "limma"),
                  regexp = "*one coef*")
     expect_error(model_fit(exrna, design, "condition", "limma"),
@@ -34,6 +33,7 @@ test_that("model_fit with limma", {
     expect_equal(res$coef, "ConditionSystemic Lupus Erythematosus")
     expect_equal(res$adjust.method, "BH")
     expect_equal(res$distribution, "t")
+    expect_is(res$df, "numeric")
 
     # test model_fit with voom = FALSE
     design = model.matrix(~Treatment * Timepoint + Subject,
@@ -70,6 +70,8 @@ test_that("model_fit with edgeR", {
     expect_equal(res$coef, coef)
     expect_equal(res$adjust.method, "BH")
     expect_equal(res$distribution, "f")
+    expect_is(res$df, "list")
+    expect_equal(length(res$df), 2)
 
     # lrt
     design = model.matrix(~Condition, data = exrna$pdata)
@@ -85,6 +87,7 @@ test_that("model_fit with edgeR", {
     expect_equal(res$coef, coef)
     expect_equal(res$adjust.method, "BH")
     expect_equal(res$distribution, "chisq")
+    expect_true(is.numeric(res$df))
 })
 
 test_that("model_fit with DESeq2", {
@@ -101,6 +104,19 @@ test_that("model_fit with DESeq2", {
     expect_equal(res$coef, coef)
     expect_equal(res$adjust.method, "BH")
     expect_equal(res$distribution, "norm")
+    expect_is(res$df, "NULL")
+
+    res = model_fit(exrna, design, coef, "DESeq2", args = list(DESeq = list(useT = TRUE)))
+    expect_true(is.numeric(res$df))
+    expect_equal(res$distribution, "t")
+
+    reduced = model.matrix(~1, data = exrna$pdata)
+    res = model_fit(
+        exrna, design, coef, "DESeq2",
+        args = list(DESeq = list(test = "LRT", reduced = reduced))
+    )
+    expect_true(is.numeric(res$df))
+    expect_equal(res$distribution, "chisq")
 })
 
 test_that("volcano plot", {

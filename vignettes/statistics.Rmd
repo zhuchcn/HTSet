@@ -173,6 +173,17 @@ fit3_2 = model_fit(
 )
 ```
 
+DESeq2 also provides a likelihood ratio test. That can be done in a very similar way, by parsing additional arguments to the `args` parameter.
+
+```{r}
+reduced = model.matrix(~1, data = exrna$pdata)
+fit3_2 = model_fit(
+    exrna, design = design, coef = coef, engin = "DESeq2",
+    args = list(
+        DESeq = list(test = "LRT", reduced = reduced)
+    )
+)
+```
 
 ```{r}
 fit3$results[order(fit3$results$pval),] %>% head %>% kable()

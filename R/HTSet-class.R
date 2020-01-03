@@ -98,3 +98,6 @@ setMethod(
         )
     }
 )
+
+utils::globalVariables(c(".", "logFC", "pval", "sample_id", "greater.x",
+                         "less.x", "diff.x", "var", "group", "pvalue"))
