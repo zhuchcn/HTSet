@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract or replace parts of an HTSet object — $,HTSet-method • HTSet</title>
+<title>ecdf plot for kst enrichment test — plot.EnrichmentKST • HTSet</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,9 @@
 
 
 
-<meta property="og:title" content="Extract or replace parts of an HTSet object — $,HTSet-method" />
-<meta property="og:description" content="Operators &quot;$&quot; and [[ extract or replace a slot, while [ extracts
-a subset of the HTSet-class object in a similar manner of
-subset_features and subset_samples." />
+<meta property="og:title" content="ecdf plot for kst enrichment test — plot.EnrichmentKST" />
+<meta property="og:description" content="makes a ecdf plot for enrichment test result returned by
+enrichment_test with test equals to kst." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -114,85 +113,72 @@ subset_features and subset_samples." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract or replace parts of an HTSet object</h1>
+    <h1>ecdf plot for kst enrichment test</h1>
     
-    <div class="hidden name"><code>HTSet-Extract.Rd</code></div>
+    <div class="hidden name"><code>plot.EnrichmentKST.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Operators "$" and [[ extract or replace a slot, while [ extracts
-a subset of the <code>HTSet-class</code> object in a similar manner of
-<code>subset_features</code> and <code>subset_samples</code>.</p>
+    <p>makes a ecdf plot for enrichment test result returned by
+<code>enrichment_test</code> with test equals to kst.</p>
     </div>
 
-    <pre class="usage"># S4 method for HTSet
-$(x, name)
-
-# S4 method for HTSet
-$(x, name)
-
-# S4 method for HTSet
-$(x, name) <- value
-
-# S4 method for HTSet,character
-[[(x, i, j, ...)
-
-# S4 method for HTSet,character
-[[(x, i, j, ...) <- value
-
-# S4 method for HTSet
-[(x, i, j, k, l, ..., drop = FALSE)</pre>
+    <pre class="usage"><span class='co'># S3 method for EnrichmentKST</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>level</span>, <span class='kw'>alt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"greater"</span>, <span class='st'>"less"</span>), <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"blue"</span>, <span class='st'>"red"</span>), <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>HTSet-class</code>.</p></td>
+      <td><p>EnrichmentKST. Returned by <code>enrichment_test</code>
+when test equals to kst.</p></td>
     </tr>
     <tr>
-      <th>name</th>
-      <td><p>The name of the slot.</p></td>
+      <th>level</th>
+      <td><p>character. The level to plot the ecdf plot. Must be in the
+group.</p></td>
     </tr>
     <tr>
-      <th>value</th>
-      <td><p>A replacement value for this slot, which must match the slot
-definition.</p></td>
+      <th>alt</th>
+      <td><p>character. Must be either greater or less.</p></td>
     </tr>
     <tr>
-      <th>i, j</th>
-      <td><p>indices for features (i) and samples (j) to extract.</p></td>
+      <th>colors</th>
+      <td><p>character</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other arguments</p></td>
-    </tr>
-    <tr>
-      <th>k</th>
-      <td><p>column index for fdata</p></td>
-    </tr>
-    <tr>
-      <th>l</th>
-      <td><p>column index for pdata</p></td>
-    </tr>
-    <tr>
-      <th>drop</th>
-      <td><p>If TRUE the result is coerced to the lowest possible dimension</p></td>
+      <td><p>other arguments not supported</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a ggplot2 object</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>HTSet-class</code></p></div>
+    <div class='dont-index'><p><code>enrichment_test</code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>lpd</span> <span class='kw'>=</span> <span class='fu'>transform_by_sample</span>(<span class='no'>lipidome</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>x</span>/<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>x</span>)))
+<span class='no'>design</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/model.matrix.html'>model.matrix</a></span>(~<span class='no'>Treatment</span> * <span class='no'>Timepoint</span> + <span class='no'>Subject</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>lpd</span>$<span class='no'>pdata</span>)
+<span class='no'>fit</span> <span class='kw'>=</span> <span class='fu'>model_fit</span>(<span class='no'>lpd</span>, <span class='no'>design</span>, <span class='st'>"TreatmentMed:TimepointPre"</span>, <span class='st'>"limma"</span>)
+<span class='no'>en</span> <span class='kw'>=</span> <span class='fu'>enrichment_test</span>(<span class='no'>lpd</span>, <span class='no'>fit</span>, <span class='st'>"class"</span>, <span class='st'>"kst"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>en</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"PC"</span>, <span class='kw'>alt</span> <span class='kw'>=</span> <span class='st'>"greater"</span>)</div><div class='img'><img src='plot.EnrichmentKST-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
+    <h2>Author</h2>
+    <p>Chenghao Zhu</p>
   </div>
 </div>
 

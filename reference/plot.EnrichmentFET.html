@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract or replace parts of an HTSet object — $,HTSet-method • HTSet</title>
+<title>barplot for fet enrichment test — plot.EnrichmentFET • HTSet</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,10 @@
 
 
 
-<meta property="og:title" content="Extract or replace parts of an HTSet object — $,HTSet-method" />
-<meta property="og:description" content="Operators &quot;$&quot; and [[ extract or replace a slot, while [ extracts
-a subset of the HTSet-class object in a similar manner of
-subset_features and subset_samples." />
+<meta property="og:title" content="barplot for fet enrichment test — plot.EnrichmentFET" />
+<meta property="og:description" content="barplot for fet enrichment test
+This function makes bar plot for top most positively and negatively
+enriched levels." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -114,85 +114,87 @@ subset_features and subset_samples." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract or replace parts of an HTSet object</h1>
+    <h1>barplot for fet enrichment test</h1>
     
-    <div class="hidden name"><code>HTSet-Extract.Rd</code></div>
+    <div class="hidden name"><code>plot.EnrichmentFET.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Operators "$" and [[ extract or replace a slot, while [ extracts
-a subset of the <code>HTSet-class</code> object in a similar manner of
-<code>subset_features</code> and <code>subset_samples</code>.</p>
+    <p>barplot for fet enrichment test</p>
+<p>This function makes bar plot for top most positively and negatively
+enriched levels.</p>
     </div>
 
-    <pre class="usage"># S4 method for HTSet
-$(x, name)
-
-# S4 method for HTSet
-$(x, name)
-
-# S4 method for HTSet
-$(x, name) <- value
-
-# S4 method for HTSet,character
-[[(x, i, j, ...)
-
-# S4 method for HTSet,character
-[[(x, i, j, ...) <- value
-
-# S4 method for HTSet
-[(x, i, j, k, l, ..., drop = FALSE)</pre>
+    <pre class="usage"><span class='co'># S3 method for EnrichmentFET</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(
+  <span class='no'>x</span>,
+  <span class='kw'>greater</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>less</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>text.size</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>,
+  <span class='kw'>panel.ratio</span> <span class='kw'>=</span> <span class='fl'>1.2</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>HTSet-class</code>.</p></td>
+      <td><p>EnrichmentFET. Returned by <code>enrichment_test</code>
+with test equals to fet.</p></td>
     </tr>
     <tr>
-      <th>name</th>
-      <td><p>The name of the slot.</p></td>
+      <th>greater</th>
+      <td><p>integer. Number of categories which are greater.</p></td>
     </tr>
     <tr>
-      <th>value</th>
-      <td><p>A replacement value for this slot, which must match the slot
-definition.</p></td>
+      <th>less</th>
+      <td><p>integer. Number of categories which are less.</p></td>
     </tr>
     <tr>
-      <th>i, j</th>
-      <td><p>indices for features (i) and samples (j) to extract.</p></td>
+      <th>text.size</th>
+      <td><p>integer</p></td>
+    </tr>
+    <tr>
+      <th>fill</th>
+      <td><p>character. Bar fill color</p></td>
+    </tr>
+    <tr>
+      <th>panel.ratio</th>
+      <td><p>numeric. The ratio of left and right panels.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other arguments</p></td>
-    </tr>
-    <tr>
-      <th>k</th>
-      <td><p>column index for fdata</p></td>
-    </tr>
-    <tr>
-      <th>l</th>
-      <td><p>column index for pdata</p></td>
-    </tr>
-    <tr>
-      <th>drop</th>
-      <td><p>If TRUE the result is coerced to the lowest possible dimension</p></td>
+      <td><p>other params not supported</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a ggplot object</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>HTSet-class</code></p></div>
+    <div class='dont-index'><p><code>enrichment_test</code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>lpd</span> <span class='kw'>=</span> <span class='fu'>transform_by_sample</span>(<span class='no'>lipidome</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>x</span>/<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>x</span>)))
+<span class='no'>design</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/model.matrix.html'>model.matrix</a></span>(~<span class='no'>Treatment</span> * <span class='no'>Timepoint</span> + <span class='no'>Subject</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>lpd</span>$<span class='no'>pdata</span>)
+<span class='no'>fit</span> <span class='kw'>=</span> <span class='fu'>model_fit</span>(<span class='no'>lpd</span>, <span class='no'>design</span>, <span class='st'>"TreatmentMed:TimepointPre"</span>, <span class='st'>"limma"</span>)
+<span class='no'>en</span> <span class='kw'>=</span> <span class='fu'>enrichment_test</span>(<span class='no'>lpd</span>, <span class='no'>fit</span>, <span class='st'>"class"</span>, <span class='st'>"fet"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>en</span>, <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='img'><img src='plot.EnrichmentFET-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
+    <h2>Author</h2>
+    <p>Chenghao Zhu</p>
   </div>
 </div>
 
