@@ -22,9 +22,6 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, message=FALSE, warning=FALSE}
-library(edgeR)
-library(limma)
-library(DESeq2)
 library(ggplot2)
 library(knitr)
 library(kableExtra)
@@ -134,7 +131,7 @@ It is also possible to transform count data into logCPM, and use limma directly.
 
 ```{r}
 exrna_cpm = exrna
-exrna_cpm$edata = cpm(exrna_cpm$edata, prior.count = 1, log = TRUE)
+exrna_cpm$edata = edgeR::cpm(exrna_cpm$edata, prior.count = 1, log = TRUE)
 fit2 = model_fit(exrna_cpm, design = design, coef = coef, engine = "limma")
 ```
 

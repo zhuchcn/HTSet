@@ -1,0 +1,155 @@
+---
+title: "Enrichment Analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{enrichment}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(HTSet)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r, include=FALSE, eval=FALSE, echo=FALSE}
+library(GO.db)
+library(biomaRt)
+
+gene_id = strsplit(featureNames(exrna), "\\.") %>% sapply(function(x) x[1])
+
+ensembl = useMart("ensembl", dataset = "hsapiens_gene_ensembl")
+filters = listFilters(ensembl)
+attributes = listAttributes(ensembl)
+go_ids = getBM(ensembl, filters = "ensembl_gene_id", values = gene_id, 
+           attributes = c("ensembl_gene_id", "go_id"))
+exrna$fdata$go_ids = sapply(gene_id, function(id){
+    go_ids$go_id[go_ids$ensembl_gene_id == id]
+})
+```
+
+## Introduction
+
+Enrichment analysis is often useful to test whether a group of genes/features over represented in a selection compare to the background. Two statstical methods, Fisher's exact test and Kolmogorov-Smirnov, are commonly used to perform enrichment analysis on gene expression datasets.
+
+## Fisher's exact test
+
+Fisher's exact test uses hypergeometric distribution to test the independence of two nominal variables. It is used to answer the type of questions such as, did I pick up more blue balls than what it should be. For example, 1000 genes were detected in an RNA-seq experiment, 300 of which were increased in expression. 200 of the genes belong to the same category of A, and within the category of genes, 90 were increased in expression. Now you want to test whether the category A is somehow special from the background. In other words, does my treatment specially increase the expression of gene set A. We let $N$ being the total number of genes tested (1000), $m$ the number of genes in category A (200), $k$ the number of genes increased in expression (300), and $x$ the number of genes in category A and increased in expression (90). The contingency table can be drawn as below.
+
+
+|                     	| increased in expression 	| not increased in expression 	|
+|---------------------	|-------------------------	|-----------------------------	|
+| gene category A     	| 90 (x)                  	| 110 (m-x)                   	|
+| not gene category A 	| 210 (k-x)               	| 590 (N-m-(k-x))             	|
+
+The Fisher's exact test can be done using the `fisher.test` function in package `stats`
+
+```{r}
+fisher.test(matrix(c(90, 210, 110, 590), nrow = 2), alternative = "greater")
+```
+
+The p-value is $3.437\times10^{-07}$, so we reject the null hypothesis and accept that the genes that were increased by treatment are enriched in gene set A.
+
+## Kolmogorov-Smirnov
+
+While in Fisher's exact test, the gene list is devided into a 2x2 contigency table, thus user usually need to define a p-value cutoff in order to tell whether a gene is increased in expression, or more often, differentially expressed (undirectional). Kolmogorov-Smirnov test, in the other hand, does not need such a cut-off. Kolmogorov-Smirnov test is a non-parametric test tries to determine if two population are different. Kolmogorov-Smirnov test can be used to answer different types of questions. And because of it's non-parametric nature, it does not require data fitting any particular distribution. Kolmogorov-Smirnov test can be adopted to perform gene enrichment analysis by comparing the differential analysis p-values to the background p-values. In this case, the question to answer is that, does the genes in set have smaller p-values than random in an experiment. For example, we have 100 genes in a gene set, and we performed differential analysis with linear model and got the p-values.
+
+```{r}
+set.seed(12322)
+pvals = runif(100, 0, 1)
+pvals[1:60] = pvals[1:60]/3
+hist(pvals, breaks = 20)
+```
+
+Here we simulate 100 fake p-values. Although only 13 genes have the p-value smaller than 0.05, but it seems that a lot of genes are enriched in the range of p-values that are smaller than 0.4. We can test that whether there are more genes with smaller p-values than larger p-values using the Kolmogorov-Smirnov test by comparing the pvalues to an arithmetic sequence between 0 and 1.
+
+```{r}
+ks.test(pvals, seq(from = 0, to = 1, len = 100))
+```
+
+The difference between p-values and the arithmetic sequence is pretty clear in the ecdf plot below.
+
+```{r}
+plot(ecdf(pvals), col = "blue")
+lines(ecdf(seq(from = 0, to = 1, len = 100)), col = "red")
+```
+
+## Enrichment analysis with HTSet
+
+Enrichment analysis is implemented in the `enrichment_test()` function in `HTSet` package. The basic usage is:
+
+```{r, eval = FALSE}
+enrichment_test(object, fit, group, test, alternative, p.cutoff)
+```
+
+The `object` must be a HTSet. `fit` is a `ModelFit` object, returned by the `model_fit()` function. Thus the `enrichment_test()` must be called after [`model_fit()`](https://zhuchcn.github.io/HTSet/reference/model_fit.html). `group` is the categorical variable in the `fdata` slot of `object`. This can be gene type, protein, or metabolite group. `alternative` can be one from `greater`, `less`, `two.sided`, or `both`. `p.cutoff` is the p-value cutoff used by fet.
+
+We are going to use a lipidomics data set for demonstration. The dataset [`lipidome`](https://zhuchcn.github.io/HTSet/reference/lipidome.html) is the result of a lipidomics analysis on isolated HDL from 10 human subjects in a 2x2 randomized cross-over study. The study was published on *Metabolomics*, 2019 (doi: [10.1007/s11306-019-1579-1](doi.org/10.1007/s11306-019-1579-1)).
+
+### FET with HTSet
+
+We first run a differential analysis using the `model_fit()` function.
+
+```{r}
+lpd = transform_by_sample(lipidome, function(x) log(x/sum(x)))
+design = model.matrix(~Treatment * Timepoint + Subject, data = lpd$pdata)
+fit = model_fit(lpd, design, "TreatmentMed:TimepointPre", "limma")
+```
+
+We are now going to test whether the lipid species with p-value smaller than 0.05 are enriched in a certain lipid class using Fisher's exact test.
+
+```{r}
+en = enrichment_test(lpd, fit, "class", "fet", "two.sided", 0.05)
+en$pval
+```
+
+We can also test whether the lipid species that are higher in treatment group are enriched in any lipid class by setting the `alternative` to greater.
+
+```{r}
+en = enrichment_test(lpd, fit, "class", "fet", "greater", 0.05)
+en$pval
+```
+
+In the example below, the p-value cutoff is wet to 1. The question anwered now is thwether lipid species that are higher in treatment group, regardless of the p-value, are enriched in any lipid class.
+
+```{r}
+en = enrichment_test(lpd, fit, "class", "fet", "greater", 1)
+en$pval
+```
+
+```{r}
+barplot(en)
+```
+
+By setting `alternative` to both, both greater and less are tested.
+
+```{r}
+en = enrichment_test(lpd, fit, "class", "fet", "both", 0.05)
+en$pval
+```
+
+```{r}
+barplot(en)
+```
+
+## KST with HTSet
+
+Kolmogorov-Smirnov test is also implemented in `enrichment_test()` funciton.
+
+```{r}
+en = enrichment_test(lpd, fit, group = "class", test = "kst", alternative = "two.sided")
+en$pval
+```
+
+```{r}
+ecdf(en, "PC")
+```
+

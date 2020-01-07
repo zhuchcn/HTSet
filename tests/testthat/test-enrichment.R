@@ -10,6 +10,7 @@ test_that("enrichment test argument validation", {
                  "invalid p.cutoff")
     expect_error(enrichment_test(lpd, fit, test = "fet", p.cutoff = 5),
                  "invalid p.cutoff")
+    expect_error(enrichment_test(lpd, fit, test = "two.sided", p.cutoff = 1))
 })
 
 test_that("fet enrichment", {
@@ -18,6 +19,19 @@ test_that("fet enrichment", {
     fit = model_fit(exrna, design, coef, engine = "limma", args = list(voom = TRUE))
     en = enrichment_test(exrna, fit, "gene_type", "fet")
     expect_is(en, "EnrichmentFET")
+    expect_equal(en$alternative, "both")
+
+    en = enrichment_test(exrna, fit, "gene_type", "fet", "greater")
+    expect_equal(en$alternative, "greater")
+    expect_is(en$pval, "numeric")
+
+    en = enrichment_test(exrna, fit, "gene_type", "fet", "less")
+    expect_equal(en$alternative, "less")
+    expect_is(en$pval, "numeric")
+
+    en = enrichment_test(exrna, fit, "gene_type", "fet", "two.sided")
+    expect_equal(en$p.cutoff, 0.05)
+    expect_equal(en$alternative, "two.sided")
 
     fit = model_fit(exrna, design, coef, engine = "edgeR")
     en = enrichment_test(exrna, fit, "gene_type", "fet")
@@ -47,6 +61,15 @@ test_that("kst enrichment", {
     fit = model_fit(exrna, design, coef, engine = "limma", args = list(voom = TRUE))
     expect_warning(en <- enrichment_test(exrna, fit, "gene_type", "kst"))
     expect_is(en, "EnrichmentKST")
+    expect_equal(en$alternative, "both")
+
+    expect_warning(en <- enrichment_test(exrna, fit, "gene_type", "kst", "greater"))
+    expect_equal(en$alternative, "greater")
+    expect_is(en$pval, "numeric")
+
+    expect_warning(en <- enrichment_test(exrna, fit, "gene_type", "kst", "less"))
+    expect_equal(en$alternative, "less")
+    expect_is(en$pval, "numeric")
 
     fit = model_fit(exrna, design, coef, engine = "edgeR")
     expect_warning(en <- enrichment_test(exrna, fit, "gene_type", "kst"))
@@ -70,20 +93,20 @@ test_that("kst enrichment", {
                  "DESeq2's LRT test is not supported for ks test yet.")
 })
 
-test_that("enrichment barplot", {
+test_that("enrichment fet barplot", {
     lpd = transform_by_sample(lipidome, function(x) log(x/sum(x)))
     design = model.matrix(~Treatment * Timepoint + Subject, data = lpd$pdata)
     fit = model_fit(lpd, design, "TreatmentMed:TimepointPre", "limma")
     en = enrichment_test(lpd, fit, "class", "fet")
-    p = plot(en, each = 3)
+    p = barplot(en, each = 3)
     expect_is(p, "ggplot")
 })
 
-test_that("enrichment barplot", {
+test_that("enrichment kst ecdf", {
     lpd = transform_by_sample(lipidome, function(x) log(x/sum(x)))
     design = model.matrix(~Treatment * Timepoint + Subject, data = lpd$pdata)
     fit = model_fit(lpd, design, "TreatmentMed:TimepointPre", "limma")
     en = enrichment_test(lpd, fit, "class", "kst")
-    p = plot(en, level = "PC", alt = "greater")
+    p = ecdf(en, level = "PC", alternative = "greater")
     expect_is(p, "ggplot")
 })

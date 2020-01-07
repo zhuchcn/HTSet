@@ -6,7 +6,7 @@
 \title{volcano plot}
 \usage{
 \method{volcanoplot}{ModelFit}(
-  x,
+  fit,
   hline,
   color = "grey10",
   alpha = 0.75,
@@ -18,7 +18,7 @@
 )
 }
 \arguments{
-\item{x}{ModelFit. Must be returned by \code{\link{model_fit}}}
+\item{fit}{ModelFit. Must be returned by \code{\link{model_fit}}}
 
 \item{hline}{numeric. The p-value where the horizontal lines to draw. All
 values must between 0 and 1. If not given, serious lines will be drown at

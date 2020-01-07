@@ -21,8 +21,11 @@
 #' categories to perform enrichment analysis.
 #' @param test character. Must be "fet" for Fisher's exact test or "kst" for
 #' Kolmogorov-Smirnov test.
+#' @param alternative character. One of both, greater, less, or two.sided.
+#' Default is both, that both greater and less were calculated and returned.
 #' @param p.cutoff numeric. The p-value cutoff to define increase or decreasing.
-#' Only useful with fet.
+#' Only useful with fet. The default value of this argument is 0.05 when
+#' alternative equals to two.sided, and is 1 otherwise.
 #'
 #' @return A list-like S3 object. \code{pval} is the pvalues for enrichment of
 #' each category. For fet, the \code{odds.ratio} has the odds ratio for each
@@ -48,7 +51,9 @@
 #' @importFrom stats ks.test
 #' @export
 #' @author Chenghao Zhu
-enrichment_test = function(object, fit, group, test = c("fet", "kst"), p.cutoff = 1){
+enrichment_test = function(object, fit, group, test = c("fet", "kst"),
+                           alternative = c("both", "greater", "less", "two.sided"),
+                           p.cutoff){
     stopifnot(is(object, "HTSet"))
     stopifnot(is(fit, "ModelFit"))
     if(nfeatures(object) != nrow(fit$results))
@@ -58,6 +63,9 @@ enrichment_test = function(object, fit, group, test = c("fet", "kst"), p.cutoff 
     if(length(test) != 1)
         stop("invalid test")
     test = match.arg(test, c("fet", "kst"))
+    alternative = match.arg(alternative, c("both", "greater", "less", "two.sided"))
+    if(missing(p.cutoff))
+        p.cutoff = if(alternative == "two.sided") 0.05 else 1
     if(length(p.cutoff) != 1)
         stop("invalid p.cutoff")
     if(!between(p.cutoff, 0, 1))
@@ -68,58 +76,83 @@ enrichment_test = function(object, fit, group, test = c("fet", "kst"), p.cutoff 
         stop("invalid group")
     if(!group %in% colnames(object$fdata))
         stop("group can not been found")
+
     group = object$fdata[, group]
     res = {
         if(test == "fet"){
-            .fet_enrichment(object, fit, group, p.cutoff)
+            .fet_enrichment(object, fit, group, alternative, p.cutoff)
         } else {
-            .kst_enrichment(object, fit, group)
+            .kst_enrichment(object, fit, group, alternative)
         }
     }
     return(res)
 }
 
 #' @keywords internal
-.fet_enrichment = function(object, fit, group, p.cutoff){
-    res = lapply(c("greater", "less"), function(alt){
-        .compare = switch(
-            alt,
-            "greater" = function(x){x > 0},
-            "less" = function(x){x < 0}
-        )
-        lapply(unique(group), function(ele){
-            N = nrow(fit$results)
-            m = sum(group == ele)
-            n = N - m
-            k = sum(.compare(fit$results$logFC) & fit$results$pval < p.cutoff)
-            x = sum(.compare(fit$results$logFC) & fit$results$pval < p.cutoff & group == ele)
-            # http://mengnote.blogspot.com/2012/12/calculate-correct-hypergeometric-p.html
-            fet = fisher.test(matrix(c(x, k-x, m-x, N-m-(k-x)), 2, 2), alternative = "greater")
-            p.value = fet$p.value
-            odds.ratio = fet$estimate
-            names(odds.ratio) = NULL
-            return(c(N = N, m = m, n = n, k = k, x = x, p.value = p.value, odds.ratio = odds.ratio))
-        }) %>%
-            do.call(rbind, .) %>%
-            `rownames<-`(unique(group))
-    })
-    names(res) = c("greater", "less")
+.fet_enrichment = function(object, fit, group, alternative, p.cutoff){
+
+    if(alternative == "both"){
+        res = lapply(c("greater", "less"),
+                     function(alt) .fet_wrapper(fit, group, alt, p.cutoff))
+        names(res) = c("greater", "less")
+        pval = sapply(res, function(r) r[, "p.value"])
+        odds.ratio = sapply(res, function(r) r[, "odds.ratio"])
+        matrix = lapply(res, function(r) r[,1:5])
+    } else {
+        res = .fet_wrapper(fit, group, alternative, p.cutoff)
+        pval = res[, "p.value"]
+        odds.ratio = res[, "odds.ratio"]
+        matrix = res[, 1:5]
+    }
 
     structure(
         list(
-            pval = sapply(res, function(r) r[, "p.value"]),
-            odds.ratio = sapply(res, function(r) r[, "odds.ratio"]),
-            matrix = lapply(res, function(r) r[,1:5]),
+            pval = pval,
+            odds.ratio = odds.ratio,
+            matrix = matrix,
             p.cutoff = p.cutoff,
             fit = fit,
-            group = group
+            group = group,
+            alternative = alternative
         ),
         class = "EnrichmentFET"
     )
 }
 
 #' @keywords internal
-.kst_enrichment = function(object, fit, group){
+.fet_wrapper = function(fit, group, alt, p.cutoff){
+    if(alt != "two.sided"){
+        .compare = switch(
+            alt,
+            "greater" = function(x){x > 0},
+            "less" = function(x){x < 0}
+        )
+    }
+    lapply(unique(group), function(ele){
+        N = nrow(fit$results)
+        m = sum(group == ele)
+        n = N - m
+        if(alt == "two.sided"){
+            k = sum(fit$results$pval < p.cutoff)
+            x = sum(fit$results$pval < p.cutoff & group == ele)
+        } else {
+            k = sum(.compare(fit$results$logFC) & fit$results$pval < p.cutoff)
+            x = sum(.compare(fit$results$logFC) & fit$results$pval < p.cutoff & group == ele)
+        }
+
+        # http://mengnote.blogspot.com/2012/12/calculate-correct-hypergeometric-p.html
+        fet = fisher.test(matrix(c(x, k-x, m-x, N-m-(k-x)), 2, 2), alternative = "greater")
+        p.value = fet$p.value
+        odds.ratio = fet$estimate
+        names(odds.ratio) = NULL
+        return(c(N = N, m = m, n = n, k = k, x = x, p.value = p.value, odds.ratio = odds.ratio))
+    }) %>%
+        do.call(rbind, .) %>%
+        `rownames<-`(unique(group))
+}
+
+#' @keywords internal
+.kst_enrichment = function(object, fit, group, alternative){
     if(fit$engine == "DESeq2"){
         if(!is.null(fit$params$DESeq)){
             if(!is.null(fit$params$DESeq$test)){
@@ -128,40 +161,72 @@ enrichment_test = function(object, fit, group, test = c("fet", "kst"), p.cutoff 
             }
         }
     }
-    res = lapply(c("greater", "less"), function(alt){
-        pvalues = .transform_pvalues(fit$results$stat, fit$distribution, fit$df, alt == "less")
-        res = lapply(unique(group), function(ele){
-            pvals = pvalues[group == ele]
-            ks = ks.test(
-                pvals, seq(from = 0, to = 1, length.out = length(pvals)),
-                alternative = "greater"
-            )
-            d = ks$statistic
-            names(d) = NULL
-            c("d" = d, "p" = ks$p.value)
-        })
-        res = do.call(rbind, res)
-        rownames(res) = unique(group)
-        names(pvalues) = rownames(fit)
-        list(pvalues = res[, "p"], "d" = res[, "d"], adjusted.p.values = pvalues)
-    })
-    names(res) = c("greater", "less")
-    adj.p.val = data.frame(
-        raw = fit$results$pval,
-        greater = res$greater$adjusted.p.values,
-        less = res$less$adjusted.p.values,
-        row.names = featureNames(object)
-    )
+    if(alternative == "both"){
+        res = lapply(c("greater", "ess"),
+                     function(alt) .kst_wrapper(fit, group, alt))
+        names(res) = c("greater", "less")
+        pval = sapply(res, function(r) r$pvalues)
+        d = sapply(res, function(r) r$d)
+        fit_pvalues = data.frame(
+            raw = fit$results$pval,
+            greater = res$greater$adjusted.p.values,
+            less = res$less$adjusted.p.values,
+            row.names = featureNames(object)
+        )
+    } else {
+        res = .kst_wrapper(fit, group, alternative)
+        pval = res$pvalues
+        d = res$d
+        fit_pvalues = {
+            if(alternative == "two.sided")
+                data.frame(
+                    raw = fit$results$pval,
+                    row.names = featureNames(object)
+                )
+            else
+                data.frame(
+                    raw = fit$results$pval,
+                    adjusted = res$adjusted.p.values,
+                    row.names = featureNames(object)
+                )
+        }
+    }
+
     structure(
         list(
-            pval = sapply(res, function(r) r$pvalues),
-            d = sapply(res, function(r) r$d),
+            pval = pval,
+            d = d,
             fit = fit,
             group = group,
-            adj.p.val = adj.p.val
+            fit_pvalues = fit_pvalues,
+            alternative = alternative
         ),
         class = "EnrichmentKST"
     )
+}
+
+#' @keywords internal
+.kst_wrapper = function(fit, group, alt){
+    pvalues = {
+        if(alt != "two.sided")
+            .transform_pvalues(fit$results$stat, fit$distribution, fit$df, alt == "less")
+        else
+            fit$results$pval
+    }
+    res = lapply(unique(group), function(ele){
+        pvals = pvalues[group == ele]
+        ks = ks.test(
+            pvals, seq(from = 0, to = 1, length.out = length(pvals)),
+            alternative = "greater"
+        )
+        d = ks$statistic
+        names(d) = NULL
+        c("d" = d, "p" = ks$p.value)
+    })
+    res = do.call(rbind, res)
+    rownames(res) = unique(group)
+    names(pvalues) = rownames(fit)
+    list(pvalues = res[, "p"], "d" = res[, "d"], adjusted.p.values = pvalues)
 }
 
 #' @keywords internal
@@ -182,17 +247,30 @@ enrichment_test = function(object, fit, group, test = c("fet", "kst"), p.cutoff 
     }
 }
 
+#' @rdname barplot
+#' @export
+barplot = function(x, ...){
+    UseMethod("barplot", x)
+}
+
+#' @aliases barplot
+#' @rdname barplot
 #' @title barplot for fet enrichment test
-#' @title This function makes bar plot for top most positively and negatively
+#' @description This function makes bar plot for top most positively and negatively
 #' enriched levels.
 #'
 #' @param x EnrichmentFET. Returned by \code{\link{enrichment_test}}
 #' with test equals to fet.
-#' @param greater integer. Number of categories which are greater.
-#' @param less integer. Number of categories which are less.
+#' @param num integer. Number of categories to display. Use it when alternative
+#' equals to greater, less, or two.sided.
+#' @param greater integer. Number of categories which are greater. Use it when
+#' alternative equals to both.
+#' @param less integer. Number of categories which are less. Use it when
+#' alternative equals to both.
 #' @param text.size integer
 #' @param fill character. Bar fill color
 #' @param panel.ratio numeric. The ratio of left and right panels.
+#' @param title character. The title of the plot.
 #' @param ... other params not supported
 #'
 #' @return a ggplot object
@@ -201,57 +279,102 @@ enrichment_test = function(object, fit, group, test = c("fet", "kst"), p.cutoff 
 #' design = model.matrix(~Treatment * Timepoint + Subject, data = lpd$pdata)
 #' fit = model_fit(lpd, design, "TreatmentMed:TimepointPre", "limma")
 #' en = enrichment_test(lpd, fit, "class", "fet")
-#' plot(en, each = 3)
+#' barplot(en)
+#' en = enrichment_test(lpd, fit, "class", "fet", alternative = "greater")
+#' barplot(en)
 #' @export
 #' @import ggplot2
 #' @import dplyr
 #' @import cowplot
 #' @author Chenghao Zhu
 #' @seealso \code{\link{enrichment_test}}
-plot.EnrichmentFET = function(x, greater = 3, less = 3, text.size = 10,
-                              fill = "gray20", panel.ratio = 1.2, ...){
+barplot.EnrichmentFET = function(x, num = 6, greater = 3, less = 3, text.size = 10,
+                              fill = "gray20", panel.ratio = 1.2, title, ...){
     df = x$matrix %>% as.data.frame
     df$var = rownames(df)
-    df = df %>%
-        mutate(diff.x = greater.x - less.x) %>%
-        arrange(diff.x) %>%
-        filter(var %in% var[1:less] | var %in% rev(var)[1:greater]) %>%
-        mutate(var = factor(var, levels = var))
-    p1 = ggplot(df) +
-        geom_col(aes(x = var, y = greater.x), fill = fill, width = .75) +
-        geom_text(
-            aes(x = var, y = greater.x + max(df$greater.x)/20, label = greater.x),
-            size = text.size / 2.83
-        ) +
-        coord_flip() +
-        labs(x = "") +
-        theme_classic() +
-        theme(axis.line.x = element_blank(),
-              axis.text.x = element_blank(),
-              axis.ticks.x = element_blank(),
-              axis.title.x = element_blank(),
-              axis.text.y = element_text(
-                  color = "black", hjust = 0.5, margin = margin(0, 20, 0, 0),
-                  size = text.size
-              ),
-              axis.title.y = element_blank())
-    p2 = ggplot(df) +
-        geom_col(aes(x = var, y = less.x), fill = fill, width = .75) +
-        geom_text(aes(x = var, y = less.x + max(less.x)/20, label = less.x),
-                  size = text.size / 2.83) +
-        scale_y_reverse() +
-        scale_x_discrete(position = "top") +
-        coord_flip() +
-        labs(x = "") +
-        theme_classic() +
-        theme(axis.line.x = element_blank(),
-              axis.text.x = element_blank(),
-              axis.ticks.x = element_blank(),
-              axis.title.x = element_blank(),
-              axis.text.y = element_blank())
-    plot_grid(p2, p1, ncol = 2, rel_widths = c(1, panel.ratio))
+    my_theme = theme_classic() +
+        theme(
+            axis.line.x = element_blank(),
+            axis.text.x = element_blank(),
+            axis.ticks.x = element_blank(),
+            axis.title.x = element_blank(),
+            axis.title.y = element_blank(),
+            plot.title = element_text(hjust = 0.5, size = text.size + 4)
+        )
+    if(x$alternative == "both"){
+        if(missing(title))
+            title = c("higher", "lower")
+        df = df %>%
+            mutate(diff.x = greater.x - less.x) %>%
+            arrange(diff.x) %>%
+            filter(var %in% var[1:less] | var %in% rev(var)[1:greater]) %>%
+            mutate(var = factor(var, levels = var))
+        ymax = max(df$greater.x, df$less.x)
+        p1 = ggplot(df) +
+            geom_col(aes(x = var, y = greater.x), fill = fill, width = .75) +
+            geom_text(
+                aes(x = var, y = greater.x + ymax/20, label = greater.x),
+                size = text.size / 2.83
+            ) +
+            coord_flip(ylim = c(0, ymax * 1.2)) +
+            labs(x = "", title = title[1]) +
+            my_theme +
+            theme(axis.text.y = element_text(
+                color = "black", hjust = 0.5, margin = margin(0, 10, 0, 0),
+                size = text.size
+            ))
+        p2 = ggplot(df) +
+            geom_col(aes(x = var, y = less.x), fill = fill, width = .75) +
+            geom_text(aes(x = var, y = less.x + ymax/20, label = less.x),
+                      size = text.size / 2.83) +
+            scale_y_reverse() +
+            scale_x_discrete(position = "top") +
+            coord_flip(ylim = c(0, ymax * 1.2)) +
+            labs(x = "", title = title[2]) +
+            my_theme +
+            theme(axis.text.y = element_blank())
+        p = plot_grid(p2, p1, ncol = 2, rel_widths = c(1, panel.ratio))
+    } else {
+        if(num > nrow(df))
+            num = nrow(df)
+        df = arrange(df, desc(x)) %>%
+            head(num) %>%
+            mutate(var = factor(var, levels = rev(var)))
+        p = ggplot(df) +
+            geom_col(aes(var, x), fill = fill, width = .75) +
+            geom_text(
+                aes(x = var, y = x + max(df$x)/20, label = x),
+                size = text.size / 2.83
+            ) +
+            coord_flip() +
+            my_theme +
+            theme(axis.text.y = element_text(
+                color = "black", hjust = 0.5, margin = margin(0, 10, 0, 0),
+                size = text.size
+            ))
+        if(!missing(title)){
+            if(length(title) > 1){
+                warning("the first title is used")
+                title = title[1]
+            }
+            p = p + ggtitle(title)
+        }
+    }
+    return(p)
 }
 
+#' @rdname ecdf
+#' @export
+ecdf = function(x, ...){
+    UseMethod("ecdf", x)
+}
+
+#' @export
+ecdf.default = function(x, ...){
+    stats::ecdf(x, ...)
+}
+
+#' @rdname ecdf
 #' @title ecdf plot for kst enrichment test
 #'
 #' @description makes a ecdf plot for enrichment test result returned by
@@ -261,7 +384,7 @@ plot.EnrichmentFET = function(x, greater = 3, less = 3, text.size = 10,
 #' when test equals to kst.
 #' @param level character. The level to plot the ecdf plot. Must be in the
 #' group.
-#' @param alt character. Must be either greater or less.
+#' @param alternative character. Either greater or less
 #' @param colors character
 #' @param ... other arguments not supported
 #'
@@ -271,25 +394,38 @@ plot.EnrichmentFET = function(x, greater = 3, less = 3, text.size = 10,
 #' design = model.matrix(~Treatment * Timepoint + Subject, data = lpd$pdata)
 #' fit = model_fit(lpd, design, "TreatmentMed:TimepointPre", "limma")
 #' en = enrichment_test(lpd, fit, "class", "kst")
-#' plot(en, level = "PC", alt = "greater")
+#' ecdf(en, level = "PC", alternative = "greater")
+#'
+#' en = enrichment_test(lpd, fit, "class", "kst", alternative = "greater")
+#' ecdf(en, level = "PC")
+#'
+#' en = enrichment_test(lpd, fit, "class", "kst", alternative = "two.sided")
+#' ecdf(en, level = "PC")
 #'
 #' @export
 #' @import ggplot2
 #' @import dplyr
 #' @author Chenghao Zhu
 #' @seealso \code{\link{enrichment_test}}
-plot.EnrichmentKST = function(x, level, alt = c("greater", "less"),
-                              colors = c("blue", "red"), ...){
+ecdf.EnrichmentKST = function(x, level, alternative = c("greater", "less"),
+                                  colors = c("blue", "red"), ...){
     stopifnot(level %in% x$group)
     stopifnot(is.character(colors))
     stopifnot(length(colors) <= 2)
     if(length(colors) == 1)
         colors = rep(colors, 2)
-    alt = match.arg(alt, c("greater", "less"))
-    df = data.frame(
-        pvalue = x$adj.p.val[,alt]
+
+    alt = switch(
+        x$alternative,
+        "both" = match.arg(alternative, c("greater", "less")),
+        "two.sided" = "raw",
+        "adjusted"
     )
-    df$var = rownames(x$adj.p.val)
+
+    df = data.frame(
+        pvalue = x$fit_pvalues[,alt]
+    )
+    df$var = rownames(x$fit_pvalues)
     df %>%
         mutate(group = x$group) %>%
         filter(group == level) %>%

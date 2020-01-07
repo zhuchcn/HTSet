@@ -4,7 +4,14 @@
 \alias{enrichment_test}
 \title{Enrichment test}
 \usage{
-enrichment_test(object, fit, group, test = c("fet", "kst"), p.cutoff = 1)
+enrichment_test(
+  object,
+  fit,
+  group,
+  test = c("fet", "kst"),
+  alternative = c("both", "greater", "less", "two.sided"),
+  p.cutoff
+)
 }
 \arguments{
 \item{object}{\code{\link{HTSet-class}}}
@@ -17,8 +24,12 @@ categories to perform enrichment analysis.}
 \item{test}{character. Must be "fet" for Fisher's exact test or "kst" for
 Kolmogorov-Smirnov test.}
 
+\item{alternative}{character. One of both, greater, less, or two.sided.
+Default is both, that both greater and less were calculated and returned.}
+
 \item{p.cutoff}{numeric. The p-value cutoff to define increase or decreasing.
-Only useful with fet.}
+Only useful with fet. The default value of this argument is 0.05 when
+alternative equals to two.sided, and is 1 otherwise.}
 }
 \value{
 A list-like S3 object. \code{pval} is the pvalues for enrichment of

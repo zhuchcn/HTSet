@@ -328,14 +328,14 @@ model_fit = function(object, design, coef, engine, args = list(), transform,
 }
 
 #' @export
-volcanoplot = function(x, ...){
-    UseMethod("volcanoplot", x)
+volcanoplot = function(fit, ...){
+    UseMethod("volcanoplot", fit)
 }
 
 #' @title volcano plot
 #' @description Creates a volcano plot for the returned result of
 #' \code{\link{model_fit}}
-#' @param x ModelFit. Must be returned by \code{\link{model_fit}}
+#' @param fit ModelFit. Must be returned by \code{\link{model_fit}}
 #' @param hline numeric. The p-value where the horizontal lines to draw. All
 #' values must between 0 and 1. If not given, serious lines will be drown at
 #' 0.05, 0.01, 0.001, 0.0001 ...
@@ -352,16 +352,16 @@ volcanoplot = function(x, ...){
 #' @aliases volcanoplot
 #' @author Chenghao Zhu
 volcanoplot.ModelFit = function(
-    x, hline, color = "grey10", alpha = 0.75, hline_type = "dashed",
+    fit, hline, color = "grey10", alpha = 0.75, hline_type = "dashed",
     hline_color = "grey30", hline_size = 0.5, hline_alpha = 0.75, ...
 ){
-    p = ggplot(x$results)
+    p = ggplot(fit$results)
     if(missing(hline)){
         p = p + geom_hline(yintercept = -log(0.05), linetype = hline_type,
                            color = hline_color, size = hline_size,
                            alpha = hline_alpha)
         yint = 0.01
-        while(yint > min(x$results$pval)){
+        while(yint > min(fit$results$pval)){
             p = p + geom_hline(yintercept = -log(yint), linetype = hline_type,
                                color = hline_color, size = hline_size,
                                alpha = hline_alpha)
@@ -382,7 +382,7 @@ volcanoplot.ModelFit = function(
     }
     p + geom_point(aes(x = logFC, y = -log(pval)), color = color, alpha = alpha) +
         theme_classic() +
-        labs(title = x$coef) +
+        labs(title = fit$coef) +
         theme(
             plot.title = element_text(hjust = 0.5)
         )
