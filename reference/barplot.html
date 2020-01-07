@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ecdf plot for kst enrichment test — plot.EnrichmentKST • HTSet</title>
+<title>barplot for fet enrichment test — barplot • HTSet</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,9 @@
 
 
 
-<meta property="og:title" content="ecdf plot for kst enrichment test — plot.EnrichmentKST" />
-<meta property="og:description" content="makes a ecdf plot for enrichment test result returned by
-enrichment_test with test equals to kst." />
+<meta property="og:title" content="barplot for fet enrichment test — barplot" />
+<meta property="og:description" content="This function makes bar plot for top most positively and negatively
+enriched levels." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -93,6 +93,9 @@ enrichment_test with test equals to kst." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/enrichment.html">Enrichment Analysis</a>
+    </li>
+    <li>
       <a href="../articles/statistics.html">Differential analysis with HTSet</a>
     </li>
   </ul>
@@ -113,49 +116,79 @@ enrichment_test with test equals to kst." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>ecdf plot for kst enrichment test</h1>
+    <h1>barplot for fet enrichment test</h1>
     
-    <div class="hidden name"><code>plot.EnrichmentKST.Rd</code></div>
+    <div class="hidden name"><code>barplot.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>makes a ecdf plot for enrichment test result returned by
-<code>enrichment_test</code> with test equals to kst.</p>
+    <p>This function makes bar plot for top most positively and negatively
+enriched levels.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for EnrichmentKST</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>level</span>, <span class='kw'>alt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"greater"</span>, <span class='st'>"less"</span>), <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"blue"</span>, <span class='st'>"red"</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/graphics/barplot.html'>barplot</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for EnrichmentFET</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/barplot.html'>barplot</a></span>(
+  <span class='no'>x</span>,
+  <span class='kw'>num</span> <span class='kw'>=</span> <span class='fl'>6</span>,
+  <span class='kw'>greater</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>less</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>text.size</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray20"</span>,
+  <span class='kw'>panel.ratio</span> <span class='kw'>=</span> <span class='fl'>1.2</span>,
+  <span class='no'>title</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>EnrichmentKST. Returned by <code>enrichment_test</code>
-when test equals to kst.</p></td>
-    </tr>
-    <tr>
-      <th>level</th>
-      <td><p>character. The level to plot the ecdf plot. Must be in the
-group.</p></td>
-    </tr>
-    <tr>
-      <th>alt</th>
-      <td><p>character. Must be either greater or less.</p></td>
-    </tr>
-    <tr>
-      <th>colors</th>
-      <td><p>character</p></td>
+      <td><p>EnrichmentFET. Returned by <code>enrichment_test</code>
+with test equals to fet.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other arguments not supported</p></td>
+      <td><p>other params not supported</p></td>
+    </tr>
+    <tr>
+      <th>num</th>
+      <td><p>integer. Number of categories to display. Use it when alternative
+equals to greater, less, or two.sided.</p></td>
+    </tr>
+    <tr>
+      <th>greater</th>
+      <td><p>integer. Number of categories which are greater. Use it when
+alternative equals to both.</p></td>
+    </tr>
+    <tr>
+      <th>less</th>
+      <td><p>integer. Number of categories which are less. Use it when
+alternative equals to both.</p></td>
+    </tr>
+    <tr>
+      <th>text.size</th>
+      <td><p>integer</p></td>
+    </tr>
+    <tr>
+      <th>fill</th>
+      <td><p>character. Bar fill color</p></td>
+    </tr>
+    <tr>
+      <th>panel.ratio</th>
+      <td><p>numeric. The ratio of left and right panels.</p></td>
+    </tr>
+    <tr>
+      <th>title</th>
+      <td><p>character. The title of the plot.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a ggplot2 object</p>
+    <p>a ggplot object</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code>enrichment_test</code></p></div>
@@ -163,10 +196,9 @@ group.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lpd</span> <span class='kw'>=</span> <span class='fu'>transform_by_sample</span>(<span class='no'>lipidome</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>x</span>/<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>x</span>)))
 <span class='no'>design</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/model.matrix.html'>model.matrix</a></span>(~<span class='no'>Treatment</span> * <span class='no'>Timepoint</span> + <span class='no'>Subject</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>lpd</span>$<span class='no'>pdata</span>)
-<span class='no'>fit</span> <span class='kw'>=</span> <span class='fu'>model_fit</span>(<span class='no'>lpd</span>, <span class='no'>design</span>, <span class='st'>"TreatmentMed:TimepointPre"</span>, <span class='st'>"limma"</span>)
-<span class='no'>en</span> <span class='kw'>=</span> <span class='fu'>enrichment_test</span>(<span class='no'>lpd</span>, <span class='no'>fit</span>, <span class='st'>"class"</span>, <span class='st'>"kst"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>en</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"PC"</span>, <span class='kw'>alt</span> <span class='kw'>=</span> <span class='st'>"greater"</span>)</div><div class='img'><img src='plot.EnrichmentKST-1.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+<span class='no'>fit</span> <span class='kw'>=</span> <span class='fu'>model_fit</span>(<span class='no'>lpd</span>, <span class='no'>design</span>, <span class='st'>"TreatmentMed:TimepointPre"</span>, <span class='st'>"limma"</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: limma</span></div><div class='input'><span class='no'>en</span> <span class='kw'>=</span> <span class='fu'>enrichment_test</span>(<span class='no'>lpd</span>, <span class='no'>fit</span>, <span class='st'>"class"</span>, <span class='st'>"fet"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/barplot.html'>barplot</a></span>(<span class='no'>en</span>)</div><div class='img'><img src='barplot-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>en</span> <span class='kw'>=</span> <span class='fu'>enrichment_test</span>(<span class='no'>lpd</span>, <span class='no'>fit</span>, <span class='st'>"class"</span>, <span class='st'>"fet"</span>, <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"greater"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/barplot.html'>barplot</a></span>(<span class='no'>en</span>)</div><div class='img'><img src='barplot-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

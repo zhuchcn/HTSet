@@ -54,6 +54,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/enrichment.html">Enrichment Analysis</a>
+    </li>
+    <li>
       <a href="../articles/statistics.html">Differential analysis with HTSet</a>
     </li>
   </ul>
@@ -88,14 +91,11 @@ table.table {
     white-space: nowrap;
 }
 </style>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(edgeR)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(limma)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(DESeq2)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(knitr)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(kableExtra)</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(HTSet)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(knitr)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(kableExtra)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(HTSet)</a></code></pre></div>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>introduction</h2>
@@ -358,13 +358,15 @@ SRR8114385
 </table>
 <p>We are going to test whether each gene is expressed differently between patinets and control, thus the cofficient that we are going to test should be <code>ConditionSystemic Lupus Erythematosus</code> (second column name). We can than call <code>model_fit</code>. Setting <code>voom = TRUE</code> tells <code>model_fit</code> to run <code>voom</code> before calling limma’s <code>lmFit</code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">coef =<span class="st"> "ConditionSystemic Lupus Erythematosus"</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">fit1 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/model_fit.html">model_fit</a></span>(exrna, <span class="dt">design =</span> design, <span class="dt">coef =</span> coef, <span class="dt">engine =</span> <span class="st">"limma"</span>, <span class="dt">args =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">voom =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb7-2" data-line-number="2">fit1 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/model_fit.html">model_fit</a></span>(exrna, <span class="dt">design =</span> design, <span class="dt">coef =</span> coef, <span class="dt">engine =</span> <span class="st">"limma"</span>, <span class="dt">args =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">voom =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; Loading required namespace: limma</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; Loading required namespace: edgeR</span></a></code></pre></div>
 <p>When <code>args</code> has an element named <code>voom</code>, <code>model_fit</code> calls the three functions <code>voom</code>, <code>lmFit</code> and <code>eBayes</code> in order. Additional arguments can be parsed to each of the three functions by assigning a list as value to the key of the corresponding step. For example, <code>voom</code>’s mean-variance trend plot was disabled by default. To enable the plot, parse it in a list to voom, as shown below.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">fit1_<span class="dv">2</span> =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/model_fit.html">model_fit</a></span>(exrna, <span class="dt">design =</span> design, <span class="dt">coef =</span> coef, <span class="dt">engine =</span> <span class="st">"limma"</span>, </a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">                   <span class="dt">args =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">voom =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">plot =</span> <span class="ot">TRUE</span>)))</a></code></pre></div>
 <p><img src="statistics_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 <p>Draw a volcano plot</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/limma/man/volcanoplot.html">volcanoplot</a></span>(fit1, <span class="dt">hline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/volcanoplot.ModelFit.html">volcanoplot</a></span>(fit1, <span class="dt">hline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
 <p><img src="statistics_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 <p>P value histogram</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span>(fit1, <span class="dt">vline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
@@ -375,7 +377,7 @@ SRR8114385
 <a href="#limma-but-not-voom" class="anchor"></a>limma (but not voom)</h3>
 <p>It is also possible to transform count data into logCPM, and use limma directly.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">exrna_cpm =<span class="st"> </span>exrna</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">exrna_cpm<span class="op">$</span>edata =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/edgeR/man/cpm.html">cpm</a></span>(exrna_cpm<span class="op">$</span>edata, <span class="dt">prior.count =</span> <span class="dv">1</span>, <span class="dt">log =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">exrna_cpm<span class="op">$</span>edata =<span class="st"> </span>edgeR<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/edgeR/man/cpm.html">cpm</a></span>(exrna_cpm<span class="op">$</span>edata, <span class="dt">prior.count =</span> <span class="dv">1</span>, <span class="dt">log =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb11-3" data-line-number="3">fit2 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/model_fit.html">model_fit</a></span>(exrna_cpm, <span class="dt">design =</span> design, <span class="dt">coef =</span> coef, <span class="dt">engine =</span> <span class="st">"limma"</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">fit2<span class="op">$</span>results[<span class="kw"><a href="https://rdrr.io/r/base/order.html">order</a></span>(fit2<span class="op">$</span>results<span class="op">$</span>pval),] <span class="op">%&gt;%</span><span class="st"> </span>head <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</a></code></pre></div>
 <table class="table">
@@ -522,7 +524,7 @@ ENSG00000199804.1
 </tbody>
 </table>
 <p>Drawing a volcano plot</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/limma/man/volcanoplot.html">volcanoplot</a></span>(fit2, <span class="dt">hline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/volcanoplot.ModelFit.html">volcanoplot</a></span>(fit2, <span class="dt">hline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
 <p><img src="statistics_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 <p>P value histogram</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span>(fit2, <span class="dt">vline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
@@ -533,17 +535,18 @@ ENSG00000199804.1
 <a href="#deseq2" class="anchor"></a>DESeq2</h3>
 <p>To use DESeq2 to perform negative binomial glm, simply set <code>engine = "DESeq2"</code></p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">fit3 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/model_fit.html">model_fit</a></span>(exrna, <span class="dt">design =</span> design, <span class="dt">coef =</span> coef, <span class="dt">engine =</span> <span class="st">"DESeq2"</span>)</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co">#&gt; using supplied model matrix</span></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">#&gt; estimating size factors</span></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co">#&gt; estimating dispersions</span></a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co">#&gt; gene-wise dispersion estimates</span></a>
-<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co">#&gt; mean-dispersion relationship</span></a>
-<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="co">#&gt; -- note: fitType='parametric', but the dispersion trend was not well captured by the</span></a>
-<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="co">#&gt;    function: y = a/x + b, and a local regression fit was automatically substituted.</span></a>
-<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="co">#&gt;    specify fitType='local' or 'mean' to avoid this message next time.</span></a>
-<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="co">#&gt; final dispersion estimates</span></a>
-<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="co">#&gt; fitting model and testing</span></a></code></pre></div>
-<p>Additional parameters can be parsed to the <code>args</code> as a list named as <code>DESeq</code>. The parameters will be used internally by the <code>DESeq</code> function. Use <code><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">?DESeq</a></code> to see all parameters that can be used. For example, to use t distribution to estimate p-values:</p>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co">#&gt; Loading required namespace: DESeq2</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">#&gt; using supplied model matrix</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co">#&gt; estimating size factors</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co">#&gt; estimating dispersions</span></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co">#&gt; gene-wise dispersion estimates</span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="co">#&gt; mean-dispersion relationship</span></a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="co">#&gt; -- note: fitType='parametric', but the dispersion trend was not well captured by the</span></a>
+<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="co">#&gt;    function: y = a/x + b, and a local regression fit was automatically substituted.</span></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="co">#&gt;    specify fitType='local' or 'mean' to avoid this message next time.</span></a>
+<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="co">#&gt; final dispersion estimates</span></a>
+<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="co">#&gt; fitting model and testing</span></a></code></pre></div>
+<p>Additional parameters can be parsed to the <code>args</code> as a list named as <code>DESeq</code>. The parameters will be used internally by the <code>DESeq</code> function. Use <code>?DESeq</code> to see all parameters that can be used. For example, to use t distribution to estimate p-values:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">fit3_<span class="dv">2</span> =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/model_fit.html">model_fit</a></span>(</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">    exrna, <span class="dt">design =</span> design, <span class="dt">coef =</span> coef, <span class="dt">engin =</span> <span class="st">"DESeq2"</span>,</a>
 <a class="sourceLine" id="cb16-3" data-line-number="3">    <span class="dt">args =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
@@ -723,7 +726,7 @@ ENSG00000116016.14
 </tbody>
 </table>
 <p>Drawing a volcano plot</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/limma/man/volcanoplot.html">volcanoplot</a></span>(fit3, <span class="dt">hline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/volcanoplot.ModelFit.html">volcanoplot</a></span>(fit3, <span class="dt">hline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
 <p><img src="statistics_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
 <p>P value histogram</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span>(fit3, <span class="dt">vline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
@@ -879,7 +882,7 @@ ENSG00000008300.17
 </tbody>
 </table>
 <p>Drawing a volcano plot</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/limma/man/volcanoplot.html">volcanoplot</a></span>(fit4, <span class="dt">hline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/volcanoplot.ModelFit.html">volcanoplot</a></span>(fit4, <span class="dt">hline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
 <p><img src="statistics_files/figure-html/unnamed-chunk-22-1.png" width="700"></p>
 <p>P value histogram</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span>(fit4, <span class="dt">vline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
@@ -1032,7 +1035,7 @@ ENSG00000163631.17
 </tbody>
 </table>
 <p>Drawing a volcano plot</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/limma/man/volcanoplot.html">volcanoplot</a></span>(fit5, <span class="dt">hline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/volcanoplot.ModelFit.html">volcanoplot</a></span>(fit5, <span class="dt">hline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
 <p><img src="statistics_files/figure-html/unnamed-chunk-25-1.png" width="700"></p>
 <p>P value histogram</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span>(fit5, <span class="dt">vline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
@@ -1055,7 +1058,7 @@ ENSG00000163631.17
 <a class="sourceLine" id="cb27-7" data-line-number="7"><span class="co">#&gt;   $fdata: 170x15 data.frame</span></a>
 <a class="sourceLine" id="cb27-8" data-line-number="8"><span class="co">#&gt;   $pdata: 40x8 data.frame</span></a>
 <a class="sourceLine" id="cb27-9" data-line-number="9"><span class="co">#&gt;   $assay: 0 list</span></a></code></pre></div>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/DESeq2/man/summary.html">summary</a></span>(lipidome<span class="op">$</span>pdata[,<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Treatment"</span>, <span class="st">"Timepoint"</span>)])</a>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(lipidome<span class="op">$</span>pdata[,<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Treatment"</span>, <span class="st">"Timepoint"</span>)])</a>
 <a class="sourceLine" id="cb28-2" data-line-number="2"><span class="co">#&gt;  Treatment Timepoint</span></a>
 <a class="sourceLine" id="cb28-3" data-line-number="3"><span class="co">#&gt;  FF :20    Post:20  </span></a>
 <a class="sourceLine" id="cb28-4" data-line-number="4"><span class="co">#&gt;  Med:20    Pre :20</span></a></code></pre></div>
@@ -1213,7 +1216,7 @@ PC 34:2 p
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/limma/man/volcanoplot.html">volcanoplot</a></span>(fit6, <span class="dt">hline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/volcanoplot.ModelFit.html">volcanoplot</a></span>(fit6, <span class="dt">hline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
 <p><img src="statistics_files/figure-html/unnamed-chunk-31-1.png" width="700"></p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span>(fit6, <span class="dt">vline =</span> <span class="fl">0.05</span>)</a></code></pre></div>
 <p><img src="statistics_files/figure-html/unnamed-chunk-32-1.png" width="700"></p>
