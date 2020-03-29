@@ -6,19 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Enrichment Analysis • HTSet</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Enrichment Analysis">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="HTSet">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -75,7 +75,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Enrichment Analysis</h1>
+      <h1 data-toc-skip>Enrichment Analysis</h1>
             
       
       
@@ -85,25 +85,25 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(HTSet)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Attaching package: 'HTSet'</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; The following object is masked from 'package:stats':</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt;     ecdf</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; The following object is masked from 'package:graphics':</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt;     barplot</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt; Attaching package: 'dplyr'</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt; The following objects are masked from 'package:stats':</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt;     filter, lag</span></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt; The following objects are masked from 'package:base':</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt;     intersect, setdiff, setequal, union</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">HTSet</span>)
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'HTSet'</span>
+<span class="co">#&gt; The following object is masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     ecdf</span>
+<span class="co">#&gt; The following object is masked from 'package:graphics':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     barplot</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'dplyr'</span>
+<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     filter, lag</span>
+<span class="co">#&gt; The following objects are masked from 'package:base':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)</pre></body></html></div>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -133,94 +133,95 @@
 </tbody>
 </table>
 <p>The Fisher’s exact test can be done using the <code>fisher.test</code> function in package <code>stats</code></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/stats/fisher.test.html">fisher.test</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">90</span>, <span class="dv">210</span>, <span class="dv">110</span>, <span class="dv">590</span>), <span class="dt">nrow =</span> <span class="dv">2</span>), <span class="dt">alternative =</span> <span class="st">"greater"</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;  Fisher's Exact Test for Count Data</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; data:  matrix(c(90, 210, 110, 590), nrow = 2)</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; p-value = 3.437e-07</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; alternative hypothesis: true odds ratio is greater than 1</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; 95 percent confidence interval:</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;  1.732601      Inf</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; sample estimates:</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; odds ratio </span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;   2.296597</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/stats/fisher.test.html">fisher.test</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">90</span>, <span class="fl">110</span>, <span class="fl">210</span>, <span class="fl">590</span>), <span class="kw">nrow</span> <span class="kw">=</span> <span class="fl">2</span>), <span class="kw">alternative</span> <span class="kw">=</span> <span class="st">"greater"</span>)
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Fisher's Exact Test for Count Data</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; data:  matrix(c(90, 110, 210, 590), nrow = 2)</span>
+<span class="co">#&gt; p-value = 3.437e-07</span>
+<span class="co">#&gt; alternative hypothesis: true odds ratio is greater than 1</span>
+<span class="co">#&gt; 95 percent confidence interval:</span>
+<span class="co">#&gt;  1.732601      Inf</span>
+<span class="co">#&gt; sample estimates:</span>
+<span class="co">#&gt; odds ratio </span>
+<span class="co">#&gt;   2.296597</span></pre></body></html></div>
 <p>The p-value is <span class="math inline">\(3.437\times10^{-07}\)</span>, so we reject the null hypothesis and accept that the genes that were increased by treatment are enriched in gene set A.</p>
 </div>
 <div id="kolmogorov-smirnov" class="section level2">
 <h2 class="hasAnchor">
 <a href="#kolmogorov-smirnov" class="anchor"></a>Kolmogorov-Smirnov</h2>
 <p>While in Fisher’s exact test, the gene list is devided into a 2x2 contigency table, thus user usually need to define a p-value cutoff in order to tell whether a gene is increased in expression, or more often, differentially expressed (undirectional). Kolmogorov-Smirnov test, in the other hand, does not need such a cut-off. Kolmogorov-Smirnov test is a non-parametric test tries to determine if two population are different. Kolmogorov-Smirnov test can be used to answer different types of questions. And because of it’s non-parametric nature, it does not require data fitting any particular distribution. Kolmogorov-Smirnov test can be adopted to perform gene enrichment analysis by comparing the differential analysis p-values to the background p-values. In this case, the question to answer is that, does the genes in set have smaller p-values than random in an experiment. For example, we have 100 genes in a gene set, and we performed differential analysis with linear model and got the p-values.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">12322</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">pvals =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">pvals[<span class="dv">1</span><span class="op">:</span><span class="dv">60</span>] =<span class="st"> </span>pvals[<span class="dv">1</span><span class="op">:</span><span class="dv">60</span>]<span class="op">/</span><span class="dv">3</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span>(pvals, <span class="dt">breaks =</span> <span class="dv">20</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">12322</span>)
+<span class="no">pvals</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">1</span>)
+<span class="no">pvals</span>[<span class="fl">1</span>:<span class="fl">60</span>] <span class="kw">=</span> <span class="no">pvals</span>[<span class="fl">1</span>:<span class="fl">60</span>]/<span class="fl">3</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span>(<span class="no">pvals</span>, <span class="kw">breaks</span> <span class="kw">=</span> <span class="fl">20</span>)</pre></body></html></div>
 <p><img src="enrichment_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 <p>Here we simulate 100 fake p-values. Although only 13 genes have the p-value smaller than 0.05, but it seems that a lot of genes are enriched in the range of p-values that are smaller than 0.4. We can test that whether there are more genes with smaller p-values than larger p-values using the Kolmogorov-Smirnov test by comparing the pvalues to an arithmetic sequence between 0 and 1.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/stats/ks.test.html">ks.test</a></span>(pvals, <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dt">from =</span> <span class="dv">0</span>, <span class="dt">to =</span> <span class="dv">1</span>, <span class="dt">len =</span> <span class="dv">100</span>))</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;  Two-sample Kolmogorov-Smirnov test</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; data:  pvals and seq(from = 0, to = 1, len = 100)</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; D = 0.39, p-value = 4.959e-07</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; alternative hypothesis: two-sided</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/stats/ks.test.html">ks.test</a></span>(<span class="no">pvals</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="kw">from</span> <span class="kw">=</span> <span class="fl">0</span>, <span class="kw">to</span> <span class="kw">=</span> <span class="fl">1</span>, <span class="kw">len</span> <span class="kw">=</span> <span class="fl">100</span>))
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Two-sample Kolmogorov-Smirnov test</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; data:  pvals and seq(from = 0, to = 1, len = 100)</span>
+<span class="co">#&gt; D = 0.39, p-value = 4.959e-07</span>
+<span class="co">#&gt; alternative hypothesis: two-sided</span></pre></body></html></div>
 <p>The difference between p-values and the arithmetic sequence is pretty clear in the ecdf plot below.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/ecdf.html">ecdf</a></span>(pvals), <span class="dt">col =</span> <span class="st">"blue"</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/ecdf.html">ecdf</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dt">from =</span> <span class="dv">0</span>, <span class="dt">to =</span> <span class="dv">1</span>, <span class="dt">len =</span> <span class="dv">100</span>)), <span class="dt">col =</span> <span class="st">"red"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/HTSet/man/ecdf.html">ecdf</a></span>(<span class="no">pvals</span>), <span class="kw">col</span> <span class="kw">=</span> <span class="st">"blue"</span>)
+<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/HTSet/man/ecdf.html">ecdf</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="kw">from</span> <span class="kw">=</span> <span class="fl">0</span>, <span class="kw">to</span> <span class="kw">=</span> <span class="fl">1</span>, <span class="kw">len</span> <span class="kw">=</span> <span class="fl">100</span>)), <span class="kw">col</span> <span class="kw">=</span> <span class="st">"red"</span>)</pre></body></html></div>
 <p><img src="enrichment_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 </div>
 <div id="enrichment-analysis-with-htset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#enrichment-analysis-with-htset" class="anchor"></a>Enrichment analysis with HTSet</h2>
 <p>Enrichment analysis is implemented in the <code><a href="https://rdrr.io/pkg/HTSet/man/enrichment_test.html">enrichment_test()</a></code> function in <code>HTSet</code> package. The basic usage is:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/enrichment_test.html">enrichment_test</a></span>(object, fit, group, test, alternative, p.cutoff)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/HTSet/man/enrichment_test.html">enrichment_test</a></span>(<span class="no">object</span>, <span class="no">fit</span>, <span class="no">group</span>, <span class="no">test</span>, <span class="no">alternative</span>, <span class="no">p.cutoff</span>)</pre></body></html></div>
 <p>The <code>object</code> must be a HTSet. <code>fit</code> is a <code>ModelFit</code> object, returned by the <code><a href="https://rdrr.io/pkg/HTSet/man/model_fit.html">model_fit()</a></code> function. Thus the <code><a href="https://rdrr.io/pkg/HTSet/man/enrichment_test.html">enrichment_test()</a></code> must be called after <a href="https://zhuchcn.github.io/HTSet/reference/model_fit.html"><code><a href="https://rdrr.io/pkg/HTSet/man/model_fit.html">model_fit()</a></code></a>. <code>group</code> is the categorical variable in the <code>fdata</code> slot of <code>object</code>. This can be gene type, protein, or metabolite group. <code>alternative</code> can be one from <code>greater</code>, <code>less</code>, <code>two.sided</code>, or <code>both</code>. <code>p.cutoff</code> is the p-value cutoff used by fet.</p>
 <p>We are going to use a lipidomics data set for demonstration. The dataset <a href="https://zhuchcn.github.io/HTSet/reference/lipidome.html"><code>lipidome</code></a> is the result of a lipidomics analysis on isolated HDL from 10 human subjects in a 2x2 randomized cross-over study. The study was published on <em>Metabolomics</em>, 2019 (doi: <a href="doi.org/10.1007/s11306-019-1579-1">10.1007/s11306-019-1579-1</a>).</p>
 <div id="fet-with-htset" class="section level3">
 <h3 class="hasAnchor">
 <a href="#fet-with-htset" class="anchor"></a>FET with HTSet</h3>
 <p>We first run a differential analysis using the <code><a href="https://rdrr.io/pkg/HTSet/man/model_fit.html">model_fit()</a></code> function.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">lpd =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/transform_by_sample.html">transform_by_sample</a></span>(lipidome, <span class="cf">function</span>(x) <span class="kw"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(x<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(x)))</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">design =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span>(<span class="op">~</span>Treatment <span class="op">*</span><span class="st"> </span>Timepoint <span class="op">+</span><span class="st"> </span>Subject, <span class="dt">data =</span> lpd<span class="op">$</span>pdata)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">fit =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/model_fit.html">model_fit</a></span>(lpd, design, <span class="st">"TreatmentMed:TimepointPre"</span>, <span class="st">"limma"</span>)</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; Loading required namespace: limma</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">lpd</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/HTSet/man/transform_by_sample.html">transform_by_sample</a></span>(<span class="no">lipidome</span>, <span class="kw">function</span>(<span class="no">x</span>) <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="no">x</span>/<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">x</span>)))
+<span class="no">design</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span>(~<span class="no">Treatment</span> * <span class="no">Timepoint</span> + <span class="no">Subject</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">lpd</span>$<span class="no">pdata</span>)
+<span class="no">fit</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/HTSet/man/model_fit.html">model_fit</a></span>(<span class="no">lpd</span>, <span class="no">design</span>, <span class="st">"TreatmentMed:TimepointPre"</span>, <span class="st">"limma"</span>)
+<span class="co">#&gt; Loading required namespace: limma</span></pre></body></html></div>
 <p>We are now going to test whether the lipid species with p-value smaller than 0.05 are enriched in a certain lipid class using Fisher’s exact test.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">en =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/enrichment_test.html">enrichment_test</a></span>(lpd, fit, <span class="st">"class"</span>, <span class="st">"fet"</span>, <span class="st">"two.sided"</span>, <span class="fl">0.05</span>)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">en<span class="op">$</span>pval</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;         Cer          PC          PE          SM          CE Cholesterol </span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;  0.97369929  0.05403956  0.55526502  0.99862063  0.32702442  1.00000000 </span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;          DG         LPC          TG </span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;  1.00000000  1.00000000  0.22128250</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">en</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/HTSet/man/enrichment_test.html">enrichment_test</a></span>(<span class="no">lpd</span>, <span class="no">fit</span>, <span class="st">"class"</span>, <span class="st">"fet"</span>, <span class="st">"two.sided"</span>, <span class="fl">0.05</span>)
+<span class="no">en</span>$<span class="no">pval</span>
+<span class="co">#&gt;         Cer          PC          PE          SM          CE Cholesterol </span>
+<span class="co">#&gt;  0.97369929  0.05403956  0.55526502  0.99862063  0.32702442  1.00000000 </span>
+<span class="co">#&gt;          DG         LPC          TG </span>
+<span class="co">#&gt;  1.00000000  1.00000000  0.22128250</span></pre></body></html></div>
 <p>We can also test whether the lipid species that are higher in treatment group are enriched in any lipid class by setting the <code>alternative</code> to greater.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">en =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/enrichment_test.html">enrichment_test</a></span>(lpd, fit, <span class="st">"class"</span>, <span class="st">"fet"</span>, <span class="st">"greater"</span>, <span class="fl">0.05</span>)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">en<span class="op">$</span>pval</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;         Cer          PC          PE          SM          CE Cholesterol </span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt;  1.00000000  0.01701191  0.39569651  1.00000000  1.00000000  1.00000000 </span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt;          DG         LPC          TG </span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;  1.00000000  1.00000000  0.08017662</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">en</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/HTSet/man/enrichment_test.html">enrichment_test</a></span>(<span class="no">lpd</span>, <span class="no">fit</span>, <span class="st">"class"</span>, <span class="st">"fet"</span>, <span class="st">"greater"</span>, <span class="fl">0.05</span>)
+<span class="no">en</span>$<span class="no">pval</span>
+<span class="co">#&gt;         Cer          PC          PE          SM          CE Cholesterol </span>
+<span class="co">#&gt;  1.00000000  0.01701191  0.39569651  1.00000000  1.00000000  1.00000000 </span>
+<span class="co">#&gt;          DG         LPC          TG </span>
+<span class="co">#&gt;  1.00000000  1.00000000  0.08017662</span></pre></body></html></div>
 <p>In the example below, the p-value cutoff is wet to 1. The question anwered now is thwether lipid species that are higher in treatment group, regardless of the p-value, are enriched in any lipid class.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">en =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/enrichment_test.html">enrichment_test</a></span>(lpd, fit, <span class="st">"class"</span>, <span class="st">"fet"</span>, <span class="st">"greater"</span>, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">en<span class="op">$</span>pval</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt;         Cer          PC          PE          SM          CE Cholesterol </span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;  0.28500845  0.02157524  0.28200000  0.99998451  0.99973541  1.00000000 </span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;          DG         LPC          TG </span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;  0.86404455  0.93653558  0.04777647</span></a></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/barplot.html">barplot</a></span>(en)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">en</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/HTSet/man/enrichment_test.html">enrichment_test</a></span>(<span class="no">lpd</span>, <span class="no">fit</span>, <span class="st">"class"</span>, <span class="st">"fet"</span>, <span class="st">"greater"</span>, <span class="fl">1</span>)
+<span class="no">en</span>$<span class="no">pval</span>
+<span class="co">#&gt;         Cer          PC          PE          SM          CE Cholesterol </span>
+<span class="co">#&gt;  0.28500845  0.02157524  0.28200000  0.99998451  0.99973541  1.00000000 </span>
+<span class="co">#&gt;          DG         LPC          TG </span>
+<span class="co">#&gt;  0.86404455  0.93653558  0.04777647</span></pre></body></html></div>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/HTSet/man/barplot.html">barplot</a></span>(<span class="no">en</span>)
+<span class="co">#&gt; Warning: Use of `df$x` is discouraged. Use `x` instead.</span></pre></body></html></div>
 <p><img src="enrichment_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 <p>By setting <code>alternative</code> to both, both greater and less are tested.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">en =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/enrichment_test.html">enrichment_test</a></span>(lpd, fit, <span class="st">"class"</span>, <span class="st">"fet"</span>, <span class="st">"both"</span>, <span class="fl">0.05</span>)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">en<span class="op">$</span>pval</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt;                greater        less</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; Cer         1.00000000 0.406703869</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt; PC          0.01701191 0.893884885</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt; PE          0.39569651 1.000000000</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; SM          1.00000000 0.609709979</span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt; CE          1.00000000 0.002223897</span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt; Cholesterol 1.00000000 1.000000000</span></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt; DG          1.00000000 1.000000000</span></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt; LPC         1.00000000 1.000000000</span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt; TG          0.08017662 1.000000000</span></a></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/barplot.html">barplot</a></span>(en)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">en</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/HTSet/man/enrichment_test.html">enrichment_test</a></span>(<span class="no">lpd</span>, <span class="no">fit</span>, <span class="st">"class"</span>, <span class="st">"fet"</span>, <span class="st">"both"</span>, <span class="fl">0.05</span>)
+<span class="no">en</span>$<span class="no">pval</span>
+<span class="co">#&gt;                greater        less</span>
+<span class="co">#&gt; Cer         1.00000000 0.406703869</span>
+<span class="co">#&gt; PC          0.01701191 0.893884885</span>
+<span class="co">#&gt; PE          0.39569651 1.000000000</span>
+<span class="co">#&gt; SM          1.00000000 0.609709979</span>
+<span class="co">#&gt; CE          1.00000000 0.002223897</span>
+<span class="co">#&gt; Cholesterol 1.00000000 1.000000000</span>
+<span class="co">#&gt; DG          1.00000000 1.000000000</span>
+<span class="co">#&gt; LPC         1.00000000 1.000000000</span>
+<span class="co">#&gt; TG          0.08017662 1.000000000</span></pre></body></html></div>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/HTSet/man/barplot.html">barplot</a></span>(<span class="no">en</span>)</pre></body></html></div>
 <p><img src="enrichment_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
 </div>
 </div>
@@ -228,31 +229,22 @@
 <h2 class="hasAnchor">
 <a href="#kst-with-htset" class="anchor"></a>KST with HTSet</h2>
 <p>Kolmogorov-Smirnov test is also implemented in <code><a href="https://rdrr.io/pkg/HTSet/man/enrichment_test.html">enrichment_test()</a></code> funciton.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">en =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/enrichment_test.html">enrichment_test</a></span>(lpd, fit, <span class="dt">group =</span> <span class="st">"class"</span>, <span class="dt">test =</span> <span class="st">"kst"</span>, <span class="dt">alternative =</span> <span class="st">"two.sided"</span>)</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">en<span class="op">$</span>pval</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt;          Cer           PC           PE           SM           CE  Cholesterol </span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt; 0.7165313106 0.0008645224 0.0381333265 0.0474718181 0.6065306597 1.0000000000 </span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt;           DG          LPC           TG </span></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; 0.6065306597 0.4493289641 0.0201767202</span></a></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/HTSet/man/ecdf.html">ecdf</a></span>(en, <span class="st">"PC"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">en</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/HTSet/man/enrichment_test.html">enrichment_test</a></span>(<span class="no">lpd</span>, <span class="no">fit</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"class"</span>, <span class="kw">test</span> <span class="kw">=</span> <span class="st">"kst"</span>, <span class="kw">alternative</span> <span class="kw">=</span> <span class="st">"two.sided"</span>)
+<span class="no">en</span>$<span class="no">pval</span>
+<span class="co">#&gt;          Cer           PC           PE           SM           CE  Cholesterol </span>
+<span class="co">#&gt; 0.7165313106 0.0008645224 0.0381333265 0.0474718181 0.6065306597 1.0000000000 </span>
+<span class="co">#&gt;           DG          LPC           TG </span>
+<span class="co">#&gt; 0.6065306597 0.4493289641 0.0201767202</span></pre></body></html></div>
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/HTSet/man/ecdf.html">ecdf</a></span>(<span class="no">en</span>, <span class="st">"PC"</span>)</pre></body></html></div>
 <p><img src="enrichment_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#introduction">Introduction</a></li>
-      <li><a href="#fishers-exact-test">Fisher’s exact test</a></li>
-      <li><a href="#kolmogorov-smirnov">Kolmogorov-Smirnov</a></li>
-      <li><a href="#enrichment-analysis-with-htset">Enrichment analysis with HTSet</a></li>
-      <li><a href="#kst-with-htset">KST with HTSet</a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -263,7 +255,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

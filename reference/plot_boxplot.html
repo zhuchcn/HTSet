@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>summarize odd chain lipids — summarize_odd_chain • HTSet</title>
+<title>make a boxplot — plot_boxplot • HTSet</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="summarize odd chain lipids — summarize_odd_chain" />
-<meta property="og:description" content="Summarize odd chain lipids abundance of each lipid class." />
+<meta property="og:title" content="make a boxplot — plot_boxplot" />
+<meta property="og:description" content="Plotting a boxplot of a specified feature" />
 
 
 
@@ -118,16 +118,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>summarize odd chain lipids</h1>
+    <h1>make a boxplot</h1>
     
-    <div class="hidden name"><code>summarize_odd_chain.Rd</code></div>
+    <div class="hidden name"><code>plot_boxplot.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Summarize odd chain lipids abundance of each lipid class.</p>
+    <p>Plotting a boxplot of a specified feature</p>
     </div>
 
-    <pre class="usage"><span class='fu'>summarize_odd_chain</span>(<span class='no'>object</span>, <span class='no'>name</span>, <span class='no'>class</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_boxplot</span>(
+  <span class='no'>object</span>,
+  <span class='no'>feature</span>,
+  <span class='no'>x</span>,
+  <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>line_by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fill_by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>color_by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>points</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>point_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>line_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>box_width</span> <span class='kw'>=</span> <span class='fl'>0.75</span>,
+  <span class='kw'>whiskers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>whisker_width</span> <span class='kw'>=</span> <span class='fl'>0.2</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -137,21 +152,64 @@
       <td><p><code>HTSet-class</code></p></td>
     </tr>
     <tr>
-      <th>name</th>
-      <td><p>character. The column name of the feature variable contains the
-annotation name in fdata. The annotation name must be first cleaned by the
-<code>format_lipid_name</code>.</p></td>
+      <th>feature</th>
+      <td><p>character. The feature to use as y axis.</p></td>
     </tr>
     <tr>
-      <th>class</th>
-      <td><p>character. The name of the feature variable that contains the
-lipid class.</p></td>
+      <th>x</th>
+      <td><p>character. The sample variable to be used as x axis.</p></td>
+    </tr>
+    <tr>
+      <th>rows</th>
+      <td><p>character. The sample variable to split horizontally.</p></td>
+    </tr>
+    <tr>
+      <th>cols</th>
+      <td><p>character. The sample variable to split vertically.</p></td>
+    </tr>
+    <tr>
+      <th>line_by</th>
+      <td><p>characte. The sample variable to draw lines.</p></td>
+    </tr>
+    <tr>
+      <th>fill_by</th>
+      <td><p>character. The sample variable to fill colors to boxes.</p></td>
+    </tr>
+    <tr>
+      <th>color_by</th>
+      <td><p>character. The sample variable to color points and/or points.</p></td>
+    </tr>
+    <tr>
+      <th>points</th>
+      <td><p>boolean. Whether to draw points on top of boxes.</p></td>
+    </tr>
+    <tr>
+      <th>point_color</th>
+      <td><p>character. The points color. Ignored if color_by is
+specified.</p></td>
+    </tr>
+    <tr>
+      <th>line_color</th>
+      <td><p>character. The lines color. Ignored if color_by is
+specified.</p></td>
+    </tr>
+    <tr>
+      <th>box_width</th>
+      <td><p>numeric. The box width. Default: 0.75</p></td>
+    </tr>
+    <tr>
+      <th>whiskers</th>
+      <td><p>boolean. Whether to draw wiskers.</p></td>
+    </tr>
+    <tr>
+      <th>whisker_width</th>
+      <td><p>numeric. The width of wiskers.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>HTSet-class</code></p>
+    <p>ggplot</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
