@@ -19,6 +19,7 @@ Collate:
     lipidome-summarize.R
     model_fit.R
     enrichment.R
+    plot.R
 Imports:
     methods,
     utils,

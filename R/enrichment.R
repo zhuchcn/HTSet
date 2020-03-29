@@ -120,7 +120,7 @@ enrichment_test = function(object, fit, group, test = c("fet", "kst"),
 }
 
 #' @keywords internal
-.fet_wrapper = function(fit, group, alt, p.cutoff){
+.fet_wrapper = function(fit, groups, alt, p.cutoff){
     if(alt != "two.sided"){
         .compare = switch(
             alt,
@@ -128,16 +128,20 @@ enrichment_test = function(object, fit, group, test = c("fet", "kst"),
             "less" = function(x){x < 0}
         )
     }
-    lapply(unique(group), function(ele){
+    group_levels = if(is.list(groups)) do.call(c, groups) %>% unique()
+                   else unique(groups)
+    lapply(unique(group_levels), function(ele){
         N = nrow(fit$results)
-        m = sum(group == ele)
+        m = sum(sapply(groups, function(group) ele %in% group))
         n = N - m
         if(alt == "two.sided"){
             k = sum(fit$results$pval < p.cutoff)
-            x = sum(fit$results$pval < p.cutoff & group == ele)
+            x = sum(fit$results$pval < p.cutoff &
+                    sapply(groups, function(group) ele %in% group))
         } else {
             k = sum(.compare(fit$results$logFC) & fit$results$pval < p.cutoff)
-            x = sum(.compare(fit$results$logFC) & fit$results$pval < p.cutoff & group == ele)
+            x = sum(.compare(fit$results$logFC) & fit$results$pval < p.cutoff &
+                        sapply(groups, function(group) ele %in% group))
         }
 
         # http://mengnote.blogspot.com/2012/12/calculate-correct-hypergeometric-p.html
@@ -148,7 +152,7 @@ enrichment_test = function(object, fit, group, test = c("fet", "kst"),
         return(c(N = N, m = m, n = n, k = k, x = x, p.value = p.value, odds.ratio = odds.ratio))
     }) %>%
         do.call(rbind, .) %>%
-        `rownames<-`(unique(group))
+        `rownames<-`(group_levels)
 }
 
 #' @keywords internal
@@ -206,15 +210,17 @@ enrichment_test = function(object, fit, group, test = c("fet", "kst"),
 }
 
 #' @keywords internal
-.kst_wrapper = function(fit, group, alt){
+.kst_wrapper = function(fit, groups, alt){
     pvalues = {
         if(alt != "two.sided")
             .transform_pvalues(fit$results$stat, fit$distribution, fit$df, alt == "less")
         else
             fit$results$pval
     }
-    res = lapply(unique(group), function(ele){
-        pvals = pvalues[group == ele]
+    group_levels = if(is.list(groups)) do.call(c, groups) %>% unique()
+                   else unique(groups)
+    res = lapply(group_levels, function(ele){
+        pvals = pvalues[sapply(groups, function(group) ele %in% group)]
         ks = ks.test(
             pvals, seq(from = 0, to = 1, length.out = length(pvals)),
             alternative = "greater"
@@ -224,7 +230,7 @@ enrichment_test = function(object, fit, group, test = c("fet", "kst"),
         c("d" = d, "p" = ks$p.value)
     })
     res = do.call(rbind, res)
-    rownames(res) = unique(group)
+    rownames(res) = group_levels
     names(pvalues) = rownames(fit)
     list(pvalues = res[, "p"], "d" = res[, "d"], adjusted.p.values = pvalues)
 }

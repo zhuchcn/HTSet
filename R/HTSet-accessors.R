@@ -24,6 +24,11 @@ setMethod(
     }
 )
 
+.DollarNames.HTSet = function(x, pattern) {
+    grep(pattern, slotNames(x), value = TRUE)
+}
+
+
 #' @rdname HTSet-Extract
 #' @aliases [[<-
 #' @export

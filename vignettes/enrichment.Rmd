@@ -53,7 +53,7 @@ Fisher's exact test uses hypergeometric distribution to test the independence of
 The Fisher's exact test can be done using the `fisher.test` function in package `stats`
 
 ```{r}
-fisher.test(matrix(c(90, 210, 110, 590), nrow = 2), alternative = "greater")
+fisher.test(matrix(c(90, 110, 210, 590), nrow = 2), alternative = "greater")
 ```
 
 The p-value is $3.437\times10^{-07}$, so we reject the null hypothesis and accept that the genes that were increased by treatment are enriched in gene set A.
