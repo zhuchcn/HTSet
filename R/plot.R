@@ -60,7 +60,7 @@ plot_boxplot = function(
         if(is.null(color_by)) {
             p = p + geom_point(color = point_color)
         } else {
-            p = p + geom_point(aes(color = color_by))
+            p = p + geom_point(aes_string(color = color_by))
         }
     }
 
